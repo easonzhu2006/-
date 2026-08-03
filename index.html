@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vocabulary & Corpus</title>
+  <style>
+    :root{--bg:#f5f7fa;--paper:#fff;--ink:#172033;--muted:#667085;--line:#d9e2ec;--teal:#0f9f91;--teal-dark:#087b70;--teal-pale:#e8f8f5;--indigo:#4f46e5;--rose:#be123c;--shadow:0 14px 34px rgba(15,23,42,.07)}*{box-sizing:border-box}html,body{margin:0;min-width:320px;min-height:100%}body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Microsoft YaHei",sans-serif;color:var(--ink);background:linear-gradient(180deg,#f8fafc,#eef3f6)}button,input,textarea,select{font:inherit}button{cursor:pointer}.page{max-width:1400px;margin:0 auto;padding:24px 20px 44px}.header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:18px;margin-bottom:20px;border-bottom:1px solid var(--line)}.brand{color:var(--teal-dark);font-size:13px;font-weight:800}.brand .icon{display:inline-grid;place-items:center;width:25px;height:25px;margin-right:8px;background:var(--teal-pale);border-radius:6px;vertical-align:middle}h1{margin:8px 0 0;font-size:clamp(23px,3vw,34px);line-height:1.15}h2{margin:4px 0 0;font-size:20px;line-height:1.25}.sub{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.7}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:10px 14px;font-weight:700;transition:.18s;white-space:nowrap}.btn:hover{border-color:var(--teal);color:var(--teal-dark)}.btn.primary{background:var(--teal);color:#fff;border-color:var(--teal)}.btn.primary:hover{background:var(--teal-dark);color:#fff}.btn.small{padding:7px 10px;font-size:12px}.count{display:inline-grid;place-items:center;min-width:24px;height:22px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--ink);color:#fff;font-size:12px}.vault{background:var(--paper);border:1px solid var(--line);border-radius:9px;box-shadow:var(--shadow);padding:20px;margin-bottom:22px}.vault-top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.eyebrow{color:var(--teal-dark);font-size:13px;font-weight:800}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;min-width:420px}.metric{border:1px solid var(--line);background:#f8fafc;border-radius:7px;padding:11px 12px}.metric small{display:block;color:var(--muted);font-size:11px}.metric strong{display:block;margin-top:4px;font-size:20px}.vault-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin-top:18px}.asset-list,.asset-detail,.import-box{border:1px solid var(--line);background:#f8fafc;border-radius:7px;padding:14px}.filters{display:flex;gap:7px;flex-wrap:wrap}.filter{border:1px solid var(--line);background:#fff;color:#475467;border-radius:6px;padding:7px 10px;font-size:12px;font-weight:700}.filter.active{background:var(--ink);color:#fff;border-color:var(--ink)}.asset-items{max-height:200px;overflow:auto;margin-top:12px;display:grid;gap:8px}.asset-item{display:block;width:100%;text-align:left;border:1px solid var(--line);background:#fff;border-radius:6px;padding:10px}.asset-item.selected{border-color:var(--teal);background:var(--teal-pale)}.asset-item small{color:var(--muted);font-size:11px}.asset-item strong{display:block;margin-top:4px;font-size:14px}.asset-item p{margin:5px 0 0;color:#667085;font-size:12px;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.workspace{display:grid;grid-template-columns:350px minmax(0,1fr);gap:22px}.panel{background:var(--paper);border:1px solid var(--line);border-radius:9px;box-shadow:var(--shadow);padding:20px}.input-panel{align-self:start;position:sticky;top:18px}.panel-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:18px}.badge{display:inline-block;background:var(--teal-pale);color:var(--teal-dark);border-radius:6px;padding:5px 8px;font-size:12px;font-weight:800;white-space:nowrap}label{display:block;color:#344054;font-size:13px;font-weight:800;margin:0 0 7px}textarea,input,select{width:100%;border:1px solid #cfd7e1;background:#fbfcfe;color:var(--ink);border-radius:6px;padding:11px 12px;outline:none}textarea{resize:vertical;line-height:1.6}textarea:focus,input:focus,select:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,159,145,.12)}.field{margin-top:17px}.hint{background:#f8fafc;border-radius:6px;padding:10px 12px;color:var(--muted);font-size:13px;line-height:1.6;margin-top:8px}.error{background:#fff1f2;color:var(--rose);border-radius:6px;padding:9px 11px;font-size:13px;margin-top:14px}.reading{min-height:340px}.reading-body{min-height:210px;border:1px solid var(--line);background:#f8fafc;border-radius:7px;padding:20px;font-size:17px;line-height:1.95;color:#344054}.reading-body p{margin:0}.highlight{color:var(--indigo);font-weight:800}.translation{border:1px solid #bdece5;background:var(--teal-pale);border-radius:7px;padding:15px;margin-top:14px;font-size:15px;line-height:1.8}.translation strong{color:var(--teal-dark);display:block;font-size:13px;margin-bottom:5px}.skeleton{display:grid;gap:14px;padding-top:8px}.skeleton i{display:block;height:14px;background:#e4e9ef;border-radius:3px;animation:pulse 1.2s infinite}.skeleton i:nth-child(1){width:92%}.skeleton i:nth-child(2){width:100%}.skeleton i:nth-child(3){width:86%}.skeleton i:nth-child(4){width:65%}@keyframes pulse{50%{opacity:.45}}.dictionary{margin-top:22px}.word-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.word-card{border:1px solid var(--line);background:#f8fafc;border-radius:7px;padding:15px}.word-row{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.word{border:0;background:transparent;padding:0;color:var(--ink);font-size:19px;font-weight:800}.word:hover{color:var(--teal-dark)}.phonetic{color:var(--muted);font-size:13px;margin-top:4px}.lookup{width:34px;height:34px;padding:0}.definition{margin:14px 0 0;display:grid;gap:9px;font-size:13px;line-height:1.65}.definition dt{color:#667085;font-weight:800}.definition dd{margin:1px 0 0;color:#344054}.definition .meaning{font-weight:800;color:var(--ink)}.collocations{white-space:pre-line}.schema-panel{margin-top:22px}.schema-box{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:14px;font-size:12px;line-height:1.65;white-space:pre-wrap;color:#334155}.drawer-wrap{position:fixed;inset:0;z-index:10;pointer-events:none}.drawer-wrap.open{pointer-events:auto}.scrim{position:absolute;inset:0;background:rgba(15,23,42,.32);opacity:0;transition:.25s}.drawer-wrap.open .scrim{opacity:1}.drawer{position:absolute;right:0;top:0;width:min(440px,100%);height:100%;background:#fff;box-shadow:-18px 0 44px rgba(15,23,42,.18);transform:translateX(100%);transition:.28s;display:flex;flex-direction:column}.drawer-wrap.open .drawer{transform:translateX(0)}.drawer-head{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.drawer-list{padding:18px;overflow:auto;display:grid;gap:12px}.corpus-item{background:#f8fafc;border:1px solid var(--line);border-radius:7px;padding:14px}.corpus-item p{margin:0;line-height:1.7;font-size:14px}.item-actions{display:flex;gap:8px;margin-top:11px}.toast{position:fixed;z-index:20;bottom:22px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 15px;border-radius:6px;font-size:13px}.tooltip{position:fixed;z-index:15;transform:translate(-50%,-100%);background:var(--ink);color:#fff;border:0;border-radius:6px;padding:9px 12px;font-size:12px;font-weight:800;box-shadow:var(--shadow)}.empty{color:var(--muted);font-size:13px;padding:12px 0}.import-row{display:flex;gap:8px;margin-top:9px}.import-row select{width:auto;min-width:110px;padding:8px;font-size:12px}.muted-line{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px}.status-dot{display:inline-block;width:16px;height:16px;border-radius:999px;border:2px solid rgba(15,159,145,.25);border-top-color:var(--teal);animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.pack-tabs{display:flex;gap:8px;flex-wrap:wrap}.pack-note{margin-top:10px;font-size:12px;color:var(--muted);line-height:1.7}.analysis-grid{display:grid;gap:10px}.analysis-card{border:1px solid var(--line);background:#fff;border-radius:7px;padding:12px;font-size:13px;line-height:1.7}.analysis-card b{display:block;margin-bottom:4px;color:#0f172a}@media(max-width:1000px){.vault-top{display:block}.metrics{margin-top:16px;min-width:0}.workspace{grid-template-columns:1fr}.input-panel{position:static}.vault-grid{grid-template-columns:1fr}}@media(max-width:620px){.page{padding:16px 12px 30px}.header{align-items:flex-start}.header h1{font-size:23px}.header .btn{padding:9px 10px;font-size:12px}.metrics{grid-template-columns:repeat(2,1fr)}.word-grid{grid-template-columns:1fr}.panel,.vault{padding:15px}.reading-body{padding:15px;font-size:16px}.vault-grid{display:block}.asset-detail{margin-top:12px}}
+  </style>
+</head>
+<body>
+<style>
+body{background:linear-gradient(180deg,rgba(248,250,252,.94),rgba(238,243,246,.96)),radial-gradient(circle at 12% 0%,rgba(15,159,145,.15),transparent 28%),radial-gradient(circle at 88% 8%,rgba(79,70,229,.12),transparent 30%);background-attachment:fixed}.page{padding-top:30px}.header{padding:22px;margin-bottom:24px;border:1px solid rgba(217,226,236,.78);border-radius:14px;background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(248,250,252,.76));box-shadow:var(--shadow);backdrop-filter:blur(10px)}.brand{display:flex;align-items:center;color:#0f766e;letter-spacing:.04em;text-transform:uppercase}.brand .icon{box-shadow:inset 0 0 0 1px rgba(15,159,145,.18)}h1{max-width:760px;color:#0f172a;font-weight:850}.btn.primary{background:linear-gradient(135deg,#0f9f91,#087b70);box-shadow:0 10px 24px rgba(15,159,145,.22)}.btn.primary:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,159,145,.28)}.vault,.panel{border-color:rgba(217,226,236,.82);background:rgba(255,255,255,.86);backdrop-filter:blur(12px);box-shadow:0 18px 46px rgba(15,23,42,.075)}.vault{border-radius:14px;padding:22px}.panel{border-radius:12px}.metric{background:linear-gradient(180deg,#fff,#f8fafc);border-radius:10px}.metric strong{font-size:24px;color:#0f172a}.metric small{letter-spacing:.05em;text-transform:uppercase}.asset-item,.word-card{transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}.asset-item:hover,.word-card:hover{transform:translateY(-1px);border-color:rgba(15,159,145,.45);box-shadow:0 10px 24px rgba(15,23,42,.06)}.filter{border-radius:999px;padding:7px 12px}.filter.active{background:linear-gradient(135deg,#172033,#334155)}textarea,input,select{background:#fff;border-radius:9px;transition:border-color .18s ease,box-shadow .18s ease}.reading-body{font-size:18px;line-height:2.02;border-radius:11px;background:linear-gradient(180deg,#fbfdff,#f8fafc);box-shadow:inset 0 1px 0 rgba(255,255,255,.75)}.highlight{padding:0 2px;border-radius:4px;background:rgba(79,70,229,.08);box-shadow:inset 0 -6px 0 rgba(79,70,229,.08)}.translation{border-radius:11px;background:linear-gradient(180deg,#e8f8f5,#f5fffd);border-color:rgba(15,159,145,.18)}.schema-box{max-height:320px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}.word-card{border-radius:11px;background:linear-gradient(180deg,#fff,#f8fafc)}.analysis-card{border-radius:10px;background:#fff}.tooltip{background:linear-gradient(135deg,#172033,#0f766e);box-shadow:0 14px 30px rgba(15,23,42,.22)}.toast{border-radius:999px;box-shadow:0 12px 28px rgba(15,23,42,.22)}@media(max-width:620px){.header{padding:18px}.vault{padding:16px}.reading-body{font-size:16px;line-height:1.9}.metric strong{font-size:21px}}
+.nav-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.nav-actions .btn[aria-current="page"]{background:#172033;color:#fff;border-color:#172033;box-shadow:none}.app-view[hidden]{display:none!important}@media(max-width:620px){.nav-actions{justify-content:flex-start;width:100%}}
+#assetPage{max-width:1180px;margin-left:auto;margin-right:auto}.asset-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,360px);gap:18px;align-items:start;margin-top:18px}.asset-list-main{min-height:520px}.asset-list-main .asset-items{max-height:560px}.asset-side{display:grid;gap:14px;position:sticky;top:18px}.asset-side .asset-detail,.asset-side .import-box{width:100%}.asset-detail .muted-line{word-break:break-word}.asset-side textarea{min-height:112px}.asset-side .import-row{align-items:center}.asset-side .import-row .btn{min-width:82px}@media(max-width:980px){#assetPage{max-width:none}.asset-layout{grid-template-columns:1fr}.asset-side{position:static;grid-template-columns:1fr 1fr}.asset-list-main{min-height:auto}.asset-list-main .asset-items{max-height:420px}}@media(max-width:680px){.asset-side{grid-template-columns:1fr}.asset-list-main .asset-items{max-height:360px}}
+.drawer-head-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.drawer-head-actions .btn.small{padding:6px 10px}
+.asset-detail label{margin-top:12px}.edit-row{display:grid;grid-template-columns:1fr 96px;gap:10px}.asset-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.btn.danger{border-color:#fecdd3;color:#be123c;background:#fff1f2}.btn.danger:hover{border-color:#be123c;color:#9f1239;background:#ffe4e6}@media(max-width:420px){.edit-row{grid-template-columns:1fr}.asset-actions .btn{width:100%}}
+.translation .translation-highlight{display:inline!important;font-weight:850;color:#4338ca;background:rgba(79,70,229,.1);border-radius:5px;padding:1px 4px;box-shadow:inset 0 -6px 0 rgba(79,70,229,.08);margin:0}
+.corpus-translation{margin-top:10px;padding:10px 12px;background:#eefbf7;border:1px solid #bdece5;border-radius:7px;color:#0f172a;line-height:1.75;font-size:13px}.corpus-translation-inner{white-space:pre-wrap}.corpus-translation .translation-highlight{display:inline!important;font-weight:800;color:#4338ca;background:rgba(79,70,229,.08);border-radius:4px;padding:1px 3px}.corpus-item textarea{margin-top:10px}
+.corpus-dict-list{display:grid;gap:8px;margin-top:8px}.corpus-dict-card{border:1px solid rgba(15,159,145,.18);background:#fff;border-radius:7px;padding:9px 10px}.corpus-dict-card b{display:inline-block;margin-right:8px;color:#0f172a}.corpus-dict-card span{color:#667085;font-size:12px}.corpus-dict-card p{margin:5px 0 2px!important;font-weight:800;color:#0f766e}.corpus-dict-card small{color:#667085;line-height:1.5}
+:root{--paper-soft:rgba(255,255,255,.9);--ring:rgba(15,159,145,.16);--amber:#b45309;--blue:#2563eb}.page{max-width:1320px;padding-bottom:56px}.header{position:relative;overflow:hidden;align-items:stretch}.header>div:first-child{display:flex;flex-direction:column;justify-content:center}.header:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(180deg,var(--teal),var(--indigo))}.brand .icon{background:#fff;color:var(--teal-dark);border:1px solid rgba(15,159,145,.2)}.nav-actions{padding:6px;background:rgba(248,250,252,.78);border:1px solid rgba(217,226,236,.72);border-radius:12px}.nav-actions .btn{border-radius:9px;padding:9px 13px}.count{background:linear-gradient(135deg,#0f172a,#334155)}.workspace{grid-template-columns:330px minmax(0,1fr);align-items:start}.input-panel{top:20px}.panel,.vault{overflow:hidden}.panel-head{padding-bottom:14px;border-bottom:1px solid rgba(217,226,236,.72);margin-bottom:16px}.panel-head h2{font-size:19px}.eyebrow{letter-spacing:.06em;text-transform:uppercase}.badge{background:#eef2ff;color:#4338ca;border:1px solid rgba(79,70,229,.14)}.field{margin-top:18px}.hint{border:1px solid rgba(217,226,236,.7);background:#f8fafc}.generate{width:100%;margin-top:20px;padding:12px 15px;font-size:15px}.reading .panel-head{align-items:center}.reading-body{position:relative;padding:26px 28px;color:#27364a;letter-spacing:0}.reading-body p{max-width:76ch}.translation{padding:16px 18px}.translation strong{letter-spacing:.04em;text-transform:uppercase}.dictionary{margin-top:18px}.word-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}.word-card{padding:16px;border-color:rgba(217,226,236,.86)}.word-card ul{list-style:none;padding-left:0!important}.word-card li{position:relative;padding-left:18px;margin:5px 0}.word-card li:before{content:"";position:absolute;left:0;top:.72em;width:6px;height:6px;border-radius:999px;background:var(--teal)}.lookup{border-radius:10px}.definition{padding-top:12px;border-top:1px dashed rgba(217,226,236,.9)}.vault-top{align-items:center}.metrics{gap:12px}.metric{padding:14px;border-color:rgba(217,226,236,.84)}.metric:nth-child(1) strong{color:var(--teal-dark)}.metric:nth-child(2) strong{color:var(--amber)}.metric:nth-child(3) strong{color:var(--blue)}.asset-layout{grid-template-columns:minmax(0,1fr) minmax(320px,380px);gap:20px}.asset-list,.asset-detail,.import-box{background:var(--paper-soft);border-color:rgba(217,226,236,.86);border-radius:12px}.asset-list-main{padding:16px}.asset-items{gap:10px}.asset-item{border-radius:10px;padding:13px 14px}.asset-item small{display:inline-flex;align-items:center;gap:5px;padding:3px 7px;border-radius:999px;background:#f1f5f9;color:#475569}.asset-item strong{font-size:15px;margin-top:8px}.asset-item.selected{box-shadow:0 0 0 3px var(--ring);background:#f2fffc}.asset-detail b,.import-box label:first-child{font-size:15px;color:#0f172a}.asset-actions .btn{border-radius:9px}.edit-row{align-items:end}.drawer{width:min(500px,100%);background:linear-gradient(180deg,#fff,#f8fafc)}.drawer-head{align-items:flex-start;gap:14px;background:#fff}.drawer-head h2{margin-top:2px}.drawer-head-actions{justify-content:flex-end}.drawer-list{padding:18px;background:#f8fafc}.corpus-item{background:#fff;border-radius:12px;padding:16px;box-shadow:0 10px 24px rgba(15,23,42,.04)}.corpus-item p{color:#263445}.item-actions{flex-wrap:wrap}.item-actions .btn{border-radius:9px}.corpus-translation{border-radius:10px;background:linear-gradient(180deg,#f0fdfa,#fff);padding:12px 13px}.empty{border:1px dashed rgba(148,163,184,.5);border-radius:10px;background:rgba(248,250,252,.76);padding:14px;color:#64748b}.toast{bottom:26px}.tooltip{border-radius:999px;padding:10px 14px}.btn:disabled{opacity:.62;cursor:not-allowed;transform:none!important}.schema-panel{display:none!important}@media(max-width:900px){.header{flex-direction:column}.workspace{grid-template-columns:1fr}.asset-layout{grid-template-columns:1fr}.asset-side{grid-template-columns:1fr;position:static}.metrics{grid-template-columns:repeat(2,1fr);min-width:0}.reading-body p{max-width:none}}@media(max-width:560px){.page{padding:14px 10px 34px}.nav-actions{width:100%}.nav-actions .btn{flex:1;text-align:center}.metrics{grid-template-columns:1fr 1fr}.reading-body{padding:18px}.drawer-head{display:block}.drawer-head-actions{margin-top:12px;justify-content:flex-start}.drawer-head-actions .btn{flex:1}.word-grid{grid-template-columns:1fr}}
+</style>
+  <div class="auth-modal" id="authModal" hidden><div class="auth-scrim" id="authScrim"></div><section class="auth-card" role="dialog" aria-modal="true" aria-labelledby="authTitle"><div class="auth-brand">Vocabulary &amp; Corpus</div><h2 id="authTitle">登录你的学习空间</h2><p class="auth-sub" id="authSub">登录后保存个人语料、学习资产与 AI 配置。</p><div class="auth-tabs"><button class="auth-tab active" id="loginTab" type="button">登录</button><button class="auth-tab" id="registerTab" type="button">注册</button></div><form id="authForm"><label for="authEmail">邮箱</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required /><label for="authPassword">密码</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="至少 6 位" required /><div id="confirmPasswordWrap" hidden><label for="confirmPassword">确认密码</label><input id="confirmPassword" type="password" autocomplete="new-password" placeholder="再次输入密码" /></div><div class="auth-error" id="authError" hidden></div><button class="btn primary auth-submit" id="authSubmit" type="submit">登录</button></form><div class="auth-divider"><span>AI 配置</span></div><label for="apiEndpoint">你的 API 代理地址</label><input id="apiEndpoint" placeholder="https://your-api.example.com/v1/chat/completions" /><label for="apiModel">模型名称</label><input id="apiModel" placeholder="gpt-4o-mini" value="gpt-4o-mini" /><label for="apiKey">API Key（仅本地演示）</label><input id="apiKey" type="password" placeholder="sk-..." /><p class="auth-note">本地演示会将配置保存在当前浏览器。正式上线请使用后端代理保护密钥。</p><div class="auth-actions"><button class="btn small" id="saveApiConfig" type="button">保存 API 配置</button><button class="btn small" id="logoutBtn" type="button" hidden>退出登录</button></div><button class="auth-close" id="closeAuth" type="button" aria-label="关闭">×</button></section></div>
+  <main class="page">
+    <header class="header">
+      <div>
+        <div class="brand"><span class="icon">▣</span>Vocabulary & Corpus</div>
+        <h1>场景化背单词与个人语料库</h1>
+      </div>
+      <div class="nav-actions"><button class="btn primary" id="goLearn">学习台</button><button class="btn" id="goAssets">资产库</button><button class="btn" id="openCorpus">▤ 我的语料库 <b class="count" id="corpusCount">0</b></button><button class="btn" id="openAuth">登录 / API</button></div>
+    </header>
+
+    <section class="vault app-view" id="assetPage" hidden>
+      <div class="vault-top">
+        <div>
+          <div class="eyebrow">资产总览</div>
+          <h2>资产沉淀型智能学习平台</h2>
+          <p class="sub">把生词、句子、文段统一沉淀到同一资产库，当前版本使用浏览器本地存储。</p>
+        </div>
+        <div class="metrics">
+          <div class="metric"><small>资产总数</small><strong id="totalMetric">0</strong></div>
+          <div class="metric"><small>待复习</small><strong id="reviewMetric">0</strong></div>
+          <div class="metric"><small>已掌握</small><strong id="masteredMetric">0</strong></div>
+          <div class="metric"><small>平均分</small><strong id="scoreMetric">0</strong></div>
+        </div>
+      </div>
+      <div class="asset-layout">
+        <div class="asset-list asset-list-main"><div class="filters" id="filters"></div><div class="asset-items" id="assetItems"></div></div>
+        <aside class="asset-side">
+          <div class="asset-detail" id="assetDetail"><b>最近资产详情</b><div class="empty">生成文段或查词后，资产详情会显示在这里。</div></div>
+          <div class="import-box">
+            <label for="importText">资产导入</label>
+            <textarea id="importText" rows="4" placeholder="每行一个词或短语"></textarea>
+            <div class="import-row"><select id="sourceKind"><option value="imported">imported</option><option value="manual">manual</option><option value="generated">generated</option></select><button class="btn primary" id="importAssets">导入</button></div>
+          </div>
+          <div class="import-box"><label for="careerTag">职业标签</label><input id="careerTag" value="student" /><label class="tag-input" for="interestTags">兴趣标签</label><input id="interestTags" value="study abroad, reading" /><div class="muted-line" id="relationLine">关系数：0 · 复习队列：0</div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="workspace app-view" id="learnPage">
+      <aside class="panel input-panel">
+        <div class="panel-head"><div><div class="eyebrow">四词雅思写作输入</div><h2>建立本次学习任务</h2><p class="sub">支持逗号、空格或换行分隔，输入 4 个核心词。</p></div><span class="badge" id="wordCount">0/4</span></div>
+        <label for="wordInput">待记忆单词</label>
+        <textarea id="wordInput" rows="7" placeholder="例如：beyond, gentle, friendly, proceed"></textarea>
+        <div class="field"><label for="styleSelect">文体目标</label><select id="styleSelect"><option value="argumentative">雅思大作文主体段 (Argumentative)</option><option value="narrative">英文经典叙事 (Narrative)</option></select><div class="hint" id="styleHint">120–150 词，围绕成长、生活、人际、社会或学习展开，强调观点、例证与自然衔接</div></div>
+        <div class="field"><label for="sourceSelect">外刊来源</label><select id="sourceSelect"><option value="economist">The Economist</option><option value="ft">Financial Times</option><option value="nature">Nature</option></select><div class="hint">用 JSON Schema 固定输出文章、翻译、5 题与解析，避免结构漂移。</div></div>
+        <div class="field"><label for="modeSelect">文段方式</label><select id="modeSelect"><option value="ai">AI 自动生成</option><option value="excerpt">原文摘录优先</option><option value="offline">离线兜底生成</option></select><div class="hint">默认由 AI 判断：有公版经典/授权外刊原词则优先摘录，否则按词义生成外刊或经典风格文段。</div></div>
+        <div class="error" id="error" hidden></div>
+        <button class="btn primary generate" id="generateBtn">✦ 生成外刊阅读文段</button>
+      </aside>
+      <div>
+        <section class="panel reading">
+          <div class="panel-head"><div><div class="eyebrow">AI 生成文段与阅读区</div><h2 id="articleTitle">等待生成文段</h2></div><span id="loading" hidden class="status-dot"></span></div>
+          <div class="reading-body" id="readingBody">输入单词并生成场景文段后，可在这里划选句子加入个人语料库。</div>
+          <div class="translation" id="translation" hidden></div>
+        </section>
+        <section class="panel schema-panel" id="schemaPanel" hidden>
+          <div class="panel-head"><div><div class="eyebrow">结构化输出</div><h2>JSON Schema 约束</h2></div><span>◫</span></div>
+          <div class="schema-box" id="schemaBox"></div>
+        </section>
+        <section class="panel dictionary">
+          <div class="panel-head"><div><div class="eyebrow">词典与翻译解析区</div><h2>本次输入单词</h2></div><span>⌕</span></div>
+          <div class="word-grid" id="wordGrid"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div class="drawer-wrap" id="drawerWrap"><div class="scrim" id="scrim"></div><aside class="drawer"><div class="drawer-head"><div><div class="eyebrow">My Corpus</div><h2>我的语料库</h2></div><div class="drawer-head-actions"><button class="btn small" id="importCorpusBtn">导入</button><button class="btn small" id="exportCorpusBtn">导出</button><button class="btn small" id="clearCorpusBtn">清空</button><button class="btn" id="closeCorpus">×</button></div></div><div class="drawer-list" id="corpusList"></div></aside></div>
+  <button class="tooltip" id="selectionTip" hidden>＋ 加入语料库</button>
+  <div class="toast" id="toast" hidden></div>
+
+  <script>
+    (() => {
+      const MAX_WORDS = 4;
+      const ASSET_KEY = 'learningAssets';
+      const RELATION_KEY = 'assetRelations';
+      const QUEUE_KEY = 'reviewQueue';
+      const CORPUS_KEY = 'myCorpus';
+      const LEARNING_STATE_KEY = 'learningWorkspaceState';
+      const AI_PASSAGE_CONFIG = {
+        enabled: false,
+        endpoint: 'https://api.openai.com/v1/chat/completions',
+        model: 'gpt-4o-mini',
+        apiKey: '',
+      };
+      const getAiConfig = () => ({
+        ...AI_PASSAGE_CONFIG,
+        enabled: localStorage.getItem('aiPassageEnabled') === 'true' || AI_PASSAGE_CONFIG.enabled,
+        endpoint: localStorage.getItem('aiPassageEndpoint') || AI_PASSAGE_CONFIG.endpoint,
+        model: localStorage.getItem('aiPassageModel') || AI_PASSAGE_CONFIG.model,
+        apiKey: localStorage.getItem('aiPassageApiKey') || AI_PASSAGE_CONFIG.apiKey,
+      });
+      const articleSources = {
+        economist: { label: 'The Economist', theme: 'global business', tone: 'analytical, compressed, and insight-led' },
+        ft: { label: 'Financial Times', theme: 'markets and policy', tone: 'measured, data-informed, and pragmatic' },
+        nature: { label: 'Nature', theme: 'science and society', tone: 'precise, evidence-led, and conceptually dense' },
+      };
+      const readingSchema = {
+        type: 'object',
+        required: ['source', 'title', 'article', 'translation', 'questions', 'analysis'],
+        properties: {
+          source: { type: 'string' },
+          title: { type: 'string' },
+          article: {
+            type: 'object',
+            required: ['lead', 'body', 'vocabulary'],
+            properties: {
+              lead: { type: 'string' },
+              body: { type: 'string' },
+              vocabulary: { type: 'array', items: { type: 'string' }, maxItems: 5 },
+            },
+          },
+          translation: { type: 'string' },
+          questions: { type: 'array', minItems: 5, maxItems: 5 },
+          analysis: { type: 'object' },
+        },
+      };
+      const fallback = {
+        resilience: { phonetic: '/rɪˈzɪliəns/', pos: 'noun', chinese: '韧性；复原力', explanation: 'the ability to recover quickly after difficulty, pressure, or failure', collocations: ['build resilience','emotional resilience','show resilience under pressure'] },
+        dilemma: { phonetic: '/dɪˈlemə/', pos: 'noun', chinese: '困境；两难处境', explanation: 'a situation in which a difficult choice has to be made between two or more options', collocations: ['face a dilemma','a moral dilemma','resolve a dilemma'] },
+        coherent: { phonetic: '/koʊˈhɪrənt/', pos: 'adjective', chinese: '连贯的；条理清晰的', explanation: 'logical, clear, and easy to understand', collocations: ['a coherent argument','coherent structure','remain coherent'] },
+        illuminate: { phonetic: '/ɪˈluːmɪneɪt/', pos: 'verb', chinese: '阐明；照亮；使更易理解', explanation: 'to make something clearer, easier to understand, or physically brighter', collocations: ['illuminate a problem','illuminate a theme','illuminate the room'] },
+      };
+      const quickChinese = { help: '帮助', improve: '改善', support: '支持', change: '改变', growth: '增长', policy: '政策', evidence: '证据', argument: '论点', decision: '决定', pressure: '压力', recovery: '复苏', risk: '风险', value: '价值', system: '系统', market: '市场', ambition: '抱负；野心', compromise: '妥协；折中', fragile: '脆弱的', subtle: '微妙的；不易察觉的', inevitable: '不可避免的', adverse: '不利的', consequence: '后果；结果', scrutiny: '仔细审查', empathy: '共情', nostalgia: '怀旧', alienate: '疏远；使格格不入', reinforce: '加强；巩固', mitigate: '缓和；减轻', profound: '深刻的', ambiguous: '模糊的；有歧义的', transparent: '透明的；清楚的', incentive: '激励；动机', accountability: '问责；责任制', autonomy: '自主权', constraint: '限制；约束', sustainable: '可持续的', flourish: '繁荣；茁壮成长', decline: '下降；衰退', emerge: '出现；浮现', retain: '保留；保持', perceive: '察觉；理解', reveal: '揭示', conceal: '隐藏', adapt: '适应' };
+      const $ = (id) => document.getElementById(id);
+      const esc = (value = '') => String(value).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+      const uid = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`);
+      const iso = () => new Date().toISOString();
+      const read = (key, fallbackValue) => { try { return JSON.parse(localStorage.getItem(key) || 'null') ?? fallbackValue; } catch { return fallbackValue; } };
+      const write = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+      const AUTH_USERS_KEY = 'localDemoUsers';
+      const AUTH_SESSION_KEY = 'localDemoSession';
+      const readAuthUsers = () => read(AUTH_USERS_KEY, []);
+      const readAuthSession = () => read(AUTH_SESSION_KEY, null);
+      let authMode = 'login';
+      let passageRequestNo = 0;
+      function setAuthError(message = '') { $('authError').textContent = message; $('authError').hidden = !message; }
+      function setAuthMode(mode) { authMode = mode; const register = mode === 'register'; $('loginTab').classList.toggle('active', !register); $('registerTab').classList.toggle('active', register); $('authTitle').textContent = register ? '创建学习空间' : '登录你的学习空间'; $('authSub').textContent = register ? '创建本地演示账号，后续可替换为真实后端注册。' : '登录后保存个人语料、学习资产与 AI 配置。'; $('authSubmit').textContent = register ? '注册并登录' : '登录'; $('confirmPasswordWrap').hidden = !register; $('confirmPassword').required = register; setAuthError(); }
+      function syncAuthUi() { const session = readAuthSession(); const signedIn = Boolean(session); $('openAuth').textContent = signedIn ? `${session.email} · 设置` : '登录 / API'; $('logoutBtn').hidden = !signedIn; const config = getAiConfig(); $('apiEndpoint').value = config.endpoint === AI_PASSAGE_CONFIG.endpoint ? '' : config.endpoint; $('apiModel').value = config.model; $('apiKey').value = config.apiKey; $('authModal').hidden = signedIn; document.body.classList.toggle('auth-locked', !signedIn); }
+      function openAuthModal() { syncAuthUi(); setAuthMode('login'); $('authModal').hidden = false; }
+      function closeAuthModal() { $('authModal').hidden = true; setAuthError(); }
+      function saveApiSettings() { const endpoint = $('apiEndpoint').value.trim(); const model = $('apiModel').value.trim() || 'gpt-4o-mini'; const key = $('apiKey').value.trim(); if (!endpoint && !key) { localStorage.removeItem('aiPassageEnabled'); localStorage.removeItem('aiPassageEndpoint'); localStorage.removeItem('aiPassageApiKey'); localStorage.setItem('aiPassageModel', model); toast('已切回离线生成'); syncAuthUi(); return; } localStorage.setItem('aiPassageEnabled', 'true'); localStorage.setItem('aiPassageEndpoint', endpoint || AI_PASSAGE_CONFIG.endpoint); localStorage.setItem('aiPassageModel', model); if (key) localStorage.setItem('aiPassageApiKey', key); toast('API 配置已保存'); syncAuthUi(); }
+      const parseWords = (text) => [...new Map(text.split(/[\s,，;；]+/).map((x) => x.trim().toLowerCase()).filter(Boolean).map((x) => [x, x])).values()].slice(0, MAX_WORDS);
+      const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const normalize = (raw) => ({ ...raw, id: raw.id || uid(), title: (raw.title || raw.content || 'Untitled').trim(), content: (raw.content || '').trim(), tags: raw.tags || [], source: raw.source || { origin: 'manual' }, mastery: raw.mastery || { score: 20, stage: 'new' }, createdAt: raw.createdAt || iso(), updatedAt: iso() });
+      let assets = read(ASSET_KEY, []);
+      let relations = read(RELATION_KEY, []);
+      let queue = read(QUEUE_KEY, []);
+      let corpus = read(CORPUS_KEY, []);
+      let currentArticle = null;
+      let currentPack = null;
+      let selectedText = '';
+      let selectionTimer = null;
+      let selectedAssetId = '';
+      let filter = 'all';
+
+      function upsert(raw, rels = []) {
+        const asset = normalize(raw);
+        const index = assets.findIndex((x) => x.id === asset.id);
+        assets = index < 0 ? [asset, ...assets] : assets.map((x) => (x.id === asset.id ? { ...x, ...asset } : x));
+        write(ASSET_KEY, assets);
+        rels.forEach((r) => {
+          const exists = relations.some((x) => x.fromId === r.fromId && x.toId === r.toId && x.relationType === r.relationType);
+          if (!exists) relations.unshift({ ...r, createdAt: iso() });
+        });
+        write(RELATION_KEY, relations);
+        selectedAssetId = asset.id;
+      }
+      function addQueue(assetId) { if (!queue.some((x) => x.assetId === assetId)) { queue.unshift({ id: uid(), assetId, kind: 'review', dueAt: iso() }); write(QUEUE_KEY, queue); } }
+      function saveAssetEdit(assetId) {
+        const asset = assets.find((x) => x.id === assetId);
+        if (!asset) return;
+        const score = Math.max(0, Math.min(100, Number($('editScore').value || 0)));
+        const tags = $('editTags').value.split(/[,，]/).map((x) => x.trim()).filter(Boolean);
+        assets = assets.map((x) => x.id === assetId ? { ...x, title: $('editTitle').value.trim() || 'Untitled', content: $('editContent').value.trim(), tags, mastery: { ...(x.mastery || {}), score, stage: $('editStage').value }, updatedAt: iso() } : x);
+        write(ASSET_KEY, assets);
+        selectedAssetId = assetId;
+        renderVault();
+        toast('资产已保存');
+      }
+      function deleteAsset(assetId) {
+        const asset = assets.find((x) => x.id === assetId);
+        if (!asset || !confirm(`删除资产“${asset.title}”？`)) return;
+        assets = assets.filter((x) => x.id !== assetId);
+        relations = relations.filter((x) => x.fromId !== assetId && x.toId !== assetId);
+        queue = queue.filter((x) => x.assetId !== assetId);
+        write(ASSET_KEY, assets); write(RELATION_KEY, relations); write(QUEUE_KEY, queue);
+        selectedAssetId = assets[0]?.id || '';
+        renderVault();
+        toast('资产已删除');
+      }
+      function wordsAsset(word, entry) { return { type: 'word', title: word, content: word, source: { origin: 'dictionary', title: currentArticle?.title || 'Dictionary lookup' }, tags: ['dictionary'], meaning: entry, mastery: { score: 25, stage: 'learning' } }; }
+      function passageAsset(pack, words, style) { return { type: 'passage', title: pack.title, content: `${pack.article.lead}\n\n${pack.article.body}`, source: { origin: pack.sourceKey, title: pack.title, examStyle: style }, tags: ['generated', style, pack.sourceKey, ...words.map((x) => `vocab:${x.toLowerCase()}`)], meaning: { explanation: pack.translation }, mastery: { score: 35, stage: 'learning' } }; }
+      function dictionaryGloss(word) {
+        const base = fallback[word.toLowerCase()] || { chinese: quickChinese[word.toLowerCase()] || word, explanation: word, phonetic: '', pos: '' };
+        return { chinese: base.chinese, explanation: base.explanation, phonetic: base.phonetic, pos: base.pos };
+      }
+      function sentenceAsset(text) { return { type: 'sentence', title: text.slice(0, 25), content: text, source: { origin: 'manual', title: currentArticle?.title || 'Corpus' }, tags: ['corpus'], mastery: { score: 30, stage: 'review' } }; }
+      function corpusDictionaryEntries(text) {
+        return [...new Set((text.match(/\b([A-Za-z][A-Za-z'-]*)\b/g) || []).map((w) => w.toLowerCase()))]
+          .map((word) => ({ word, ...dictionaryGloss(word) }))
+          .filter((entry) => fallback[entry.word] || quickChinese[entry.word]);
+      }
+      function corpusTranslation(text) {
+        const translated = corpusDictionaryEntries(text).reduce((acc, entry) => {
+          const re = new RegExp(`\\b${escapeRegExp(entry.word)}\\b`, 'gi');
+          return acc.replace(re, `<strong class="translation-highlight">${esc(entry.chinese)}</strong>`);
+        }, esc(text));
+        const entries = corpusDictionaryEntries(text);
+        const cards = entries.length ? `<div class="corpus-dict-list">${entries.map((entry) => `<div class="corpus-dict-card"><b>${entry.word}</b><span>${entry.phonetic || '暂无音标'} · ${entry.pos || 'word'}</span><p>${entry.chinese}</p><small>${entry.explanation || '来自词典释义库'}</small></div>`).join('')}</div>` : '<div class="muted-line">暂无可匹配的词典词条，可先在词典区查词后再收藏。</div>';
+        return `<div><b>参考译文</b><p>${translated}</p></div><div style="margin-top:10px"><b>词典释义</b>${cards}</div>`;
+      }
+      function exportCorpus() {
+        const payload = { exportedAt: iso(), corpus };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `corpus-export-${Date.now()}.json`; a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        toast('语料已导出');
+      }
+      function importCorpus(text) {
+        const raw = text.trim();
+        if (!raw) return;
+        try {
+          const parsed = JSON.parse(raw);
+          const items = Array.isArray(parsed) ? parsed : (parsed.corpus || parsed.items || []);
+          if (Array.isArray(items) && items.length) {
+            items.forEach((item) => corpus.unshift({ id: item.id || uid(), text: item.text || item.content || '', note: item.note || '', createdAt: item.createdAt || iso() }));
+            write(CORPUS_KEY, corpus);
+            renderCorpus(); renderVault(); saveLearningState(currentPack, parseWords($('wordInput').value), corpus); toast(`已导入 ${items.length} 条语料`);
+            return;
+          }
+        } catch {}
+        raw.split(/\n+/).map((x) => x.trim()).filter(Boolean).forEach((line) => corpus.unshift({ id: uid(), text: line, note: '', createdAt: iso() }));
+        write(CORPUS_KEY, corpus);
+        renderCorpus(); renderVault(); saveLearningState(currentPack, parseWords($('wordInput').value), corpus); toast('已导入文本语料');
+      }
+      function clearCorpus() {
+        if (!confirm('清空当前语料库中的所有句子？')) return;
+        corpus = [];
+        write(CORPUS_KEY, corpus);
+        renderCorpus(); renderVault(); saveLearningState(currentPack, parseWords($('wordInput').value), corpus); toast('语料库已清空');
+      }
+      function saveLearningState(pack = currentPack, words = parseWords($('wordInput').value), corpusState = corpus) {
+        write(LEARNING_STATE_KEY, { wordsText: $('wordInput').value, style: $('styleSelect').value, source: $('sourceSelect').value, mode: $('modeSelect').value, pack, words, corpusState, savedAt: iso() });
+      }
+      function clearLearningOutput() {
+        currentPack = null; currentArticle = null;
+        $('articleTitle').textContent = '等待生成文段';
+        $('readingBody').textContent = '输入单词并生成场景文段后，可在这里划选句子加入个人语料库。';
+        $('translation').hidden = true;
+        $('wordGrid').innerHTML = '<div class="empty">输入单词并生成文段后，这里会显示查词卡片。</div>';
+      }
+
+      const classicExcerptBank = [
+        { title: 'A Room Lit by Hope', origin: 'Public-domain classic excerpt', keywords: ['hope', 'fear', 'courage', 'heart'], lead: 'There are moments in the old novels when a room seems to hold its breath before a life changes.', body: 'The candle burns low, the letter waits unopened, and hope, though plainly unreasonable, continues to sit at the table like a guest no one has dared dismiss.', translation: '在那些古典小说里，总有一些时刻，房间仿佛屏住呼吸，等待一个人的命运改变。烛光渐暗，信还没有拆开，而希望虽然显然并不合乎理性，却仍像一位无人敢逐客的客人坐在桌旁。' },
+        { title: 'The Weight of Pride', origin: 'Public-domain classic excerpt', keywords: ['pride', 'prejudice', 'dignity', 'vanity'], lead: 'A polite drawing room can be as severe as a courtroom.', body: 'Pride entered softly, almost well dressed, but it rearranged every chair in the room until affection itself had to ask permission before speaking.', translation: '一间礼貌的会客室也可以像法庭一样严厉。傲慢轻轻走进来，甚至衣着得体，却重新摆布了屋内每一把椅子，直到连情感开口前都必须请求许可。' },
+        { title: 'A City Under Pressure', origin: 'Licensed foreign-publication corpus placeholder', keywords: ['market', 'policy', 'growth', 'risk', 'evidence'], lead: 'Markets rarely announce a change of mind; they alter the temperature of a room and wait for people to notice.', body: 'By the time policy makers discovered the risk, investors had already converted evidence into behaviour, and behaviour into a quieter form of power.', translation: '市场很少公开宣布自己改变了想法；它只是改变一个房间的温度，然后等人们注意到。等政策制定者发现风险时，投资者已经把证据转化为行为，又把行为转化为一种更安静的权力。' }
+      ];
+      function seededIndex(words, salt, length) { const text = `${words.join('|')}|${salt}`; let n = 0; for (let i = 0; i < text.length; i++) n = (n * 31 + text.charCodeAt(i)) >>> 0; return length ? n % length : 0; }
+      function matchingExcerpt(words) { return classicExcerptBank.map((item) => ({ item, score: words.filter((w) => item.keywords.includes(w.toLowerCase())).length })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score)[0]?.item || null; }
+      function semanticSlot(word, role, lang = 'en') {
+        const profile = wordProfile(word);
+        if (lang === 'zh') return `${word}（${profile.chinese}）`;
+        if (profile.kind === 'verb') return `${word} what had previously remained implied`;
+        if (profile.kind === 'adjective') return `a ${word} pattern, ${profile.explanation}`;
+        if (role === 1) return `a ${word} that forced a choice rather than a comment`;
+        if (role === 3) return `${word} the deeper structure of the moment`;
+        return `${word}, not as ornament but as ${profile.explanation}`;
+      }
+      function wordProfile(word) {
+        const lower = word.toLowerCase();
+        const entry = dictionaryGloss(lower);
+        const kind = /^(to\s+)/i.test(word) || /(ate|ify|ise|ize|en|mitigate|reinforce|adapt|emerge|retain|perceive|reveal|conceal|illuminate)$/i.test(lower) ? 'verb' : /(ent|ant|ive|ous|ful|less|able|ible|al|ic|fragile|subtle|inevitable|adverse|profound|ambiguous|transparent|sustainable|coherent)$/i.test(lower) ? 'adjective' : 'noun';
+        return { word, lower, kind, chinese: entry.chinese || quickChinese[lower] || '核心含义', explanation: entry.explanation && entry.explanation !== word ? entry.explanation : (quickChinese[lower] ? quickChinese[lower] : 'a meaning-bearing pressure in this context') };
+      }
+      function meaningWeave(words, style, lang = 'en') {
+        const profiles = words.map(wordProfile);
+        if (!profiles.length) return '';
+        if (lang === 'zh') {
+          return profiles.map((p, idx) => {
+            const openers = ['因此', '随后', '更关键的是', '到最后', '与此同时'];
+            if (p.kind === 'verb') return `${openers[idx % openers.length]}，${p.word} 被处理为“${p.chinese}”：它推动场景发生变化，而不是只停留在词面。`;
+            if (p.kind === 'adjective') return `${openers[idx % openers.length]}，${p.word} 对应“${p.chinese}”：它用来修饰一种状态或结构，让描写更精确。`;
+            return `${openers[idx % openers.length]}，${p.word} 指向“${p.chinese}”：它承担段落中的核心矛盾或判断压力。`;
+          }).join('');
+        }
+        return profiles.map((p, idx) => {
+          const openers = style === 'argumentative' ? ['In this reading', 'More importantly', 'The point is not decorative', 'That is why', 'By the end'] : ['In the scene', 'A moment later', 'What gives the image force is this', 'The detail matters because', 'By the end'];
+          if (p.kind === 'verb') return `${openers[idx % openers.length]}, ${p.word} works as a verb of change: it makes the hidden pressure visible through action.`;
+          if (p.kind === 'adjective') return `${openers[idx % openers.length]}, ${p.word} describes the quality of a situation rather than merely decorating a noun.`;
+          return `${openers[idx % openers.length]}, ${p.word} names the pressure around which the sentence turns: ${p.explanation}.`;
+        }).join(' ');
+      }
+      function questionsFor(packTitle, words, tone) { const focus = words[0] || 'theme'; return [{ type: 'detail', stem: 'What does the opening mainly establish?', options: ['A. A concrete scene before a larger idea','B. A list of unrelated definitions','C. A comic interruption','D. A technical manual'], answer: 'A', explanation: 'The passage begins with a scene and then broadens into interpretation.' }, { type: 'inference', stem: `What role does ${focus} play in the passage?`, options: ['A. It becomes part of the central tension','B. It is mentioned only as decoration','C. It cancels the argument','D. It marks a change of location'], answer: 'A', explanation: `${focus} is woven into the main pressure of the paragraph.` }, { type: 'vocab', stem: 'The language style is closest to:', options: ['A. literary or quality-publication prose','B. casual text messaging','C. a recipe instruction','D. a sports score report'], answer: 'A', explanation: `The syntax and imagery are ${tone}.` }, { type: 'main-idea', stem: 'Which summary best fits the passage?', options: ['A. A small scene reveals a larger human or social pattern','B. A character completes a simple errand','C. A policy is explained through statistics only','D. A machine is repaired'], answer: 'A', explanation: 'The passage uses detail to reveal a larger pattern.' }, { type: 'tone', stem: 'The tone is best described as:', options: ['A. observant and layered','B. careless and flat','C. purely humorous','D. aggressively simple'], answer: 'A', explanation: 'The prose is designed to feel precise, vivid and reflective.' } ]; }
+      function offlineFallbackPack(words, style, sourceKey = 'economist', mode = 'ai') {
+        const source = articleSources[sourceKey] || articleSources.economist;
+        const profiles = words.map(wordProfile);
+        const seed = seededIndex(words, `${style}-${sourceKey}`, 100000);
+        const narrativeSettings = ['a rain-dark bookshop near the last tram stop', 'a courthouse archive where a junior clerk finds a misfiled letter', 'a coastal classroom after the storm has cancelled every exam', 'a hospital corridor at 4 a.m. with vending-machine light on the floor', 'a family-run theatre on the night its sign stops working', 'a train compartment crossing a border at dawn'];
+        const argumentativeSettings = ['a city trying to price climate adaptation before the flood map is updated', 'a university deciding whether algorithms should grade first drafts', 'a labour market where credentials rise faster than trust', 'a small economy learning that cheap growth can be expensive later', 'a newsroom weighing speed against public accountability', 'a health system discovering that efficiency has hidden reserves of fragility'];
+        const setting = style === 'argumentative' ? argumentativeSettings[seed % argumentativeSettings.length] : narrativeSettings[seed % narrativeSettings.length];
+        const titleNouns = profiles.map((p) => p.word[0].toUpperCase() + p.word.slice(1));
+        const title = style === 'argumentative' ? `The Hidden Price of ${titleNouns[0] || 'Choice'}` : `${titleNouns[0] || 'A Word'} in the Half-Light`;
+        const lead = style === 'argumentative' ? `The question begins in ${setting}, where a single word can expose the cost of a whole system.` : `In ${setting}, the morning seemed to arrange itself around one word before anyone dared say it aloud.`;
+        const sentenceFor = (p, idx) => {
+          const narrativeMoves = [
+            p.kind === 'verb' ? `Mara tried to ${p.word} the confusion before it hardened into blame, moving from face to face with the patience of someone repairing glass.` : p.kind === 'adjective' ? `The ${p.word} light on the table made every promise look thinner, as if the room itself had begun to doubt them.` : `She carried ${p.word} like a folded note in her coat, useful only because the morning kept testing it.`,
+            p.kind === 'verb' ? `When the clerk began to ${p.word} what the files had hidden, even the dust seemed to choose a side.` : p.kind === 'adjective' ? `His answer was ${p.word}, not because it was simple, but because every part of it held under pressure.` : `By the second hour, ${p.word} had become the thing no one could name without changing the room.`,
+            p.kind === 'verb' ? `She did not announce that she would ${p.word}; she simply acted, and the silence rearranged itself around her.` : p.kind === 'adjective' ? `There was a ${p.word} order to the scene, visible in the cups left untouched and the chairs turned slightly away.` : `No one explained ${p.word}; the damp coat, the broken clock and the unopened envelope did it for them.`,
+            p.kind === 'verb' ? `To ${p.word} was no longer a gesture but a decision, and decisions have a way of making bystanders honest.` : p.kind === 'adjective' ? `What unsettled her was the ${p.word} calm of it all, the kind that arrives just before a confession.` : `What made ${p.word} vivid was the way it forced a choice while every safe answer was still unavailable.`,
+            p.kind === 'verb' ? `At the end, she chose to ${p.word} the one fact everyone else had stepped around.` : p.kind === 'adjective' ? `At the end, the ${p.word} truth stayed behind, small enough to miss and too exact to forget.` : `At the end, ${p.word} remained like a light left burning in another room.`
+          ];
+          const argumentativeMoves = [
+            p.kind === 'verb' ? `A serious policy must ${p.word} the trade-off before delay becomes a disguised subsidy.` : p.kind === 'adjective' ? `A ${p.word} framework would show who gains from waiting and who pays for the appearance of caution.` : `Start with ${p.word}: once it is attached to incentives and costs, the argument stops being decorative.`,
+            p.kind === 'verb' ? `If regulators cannot ${p.word} the pattern early, they will mistake a symptom for a solution.` : p.kind === 'adjective' ? `The debate becomes useful only when its ${p.word} assumptions are made visible.` : `The debate becomes serious only when ${p.word} is connected to the people asked to absorb the risk.`,
+            p.kind === 'verb' ? `Firms may promise to ${p.word} later, but later is often where accountability goes to sleep.` : p.kind === 'adjective' ? `A ${p.word} report is not one with elegant language; it is one whose claims survive contact with evidence.` : `A lazy report would mention ${p.word} and move on; a better one would ask what behaviour it predicts.`,
+            p.kind === 'verb' ? `To ${p.word} the evidence is to admit that neutrality can have beneficiaries.` : p.kind === 'adjective' ? `That ${p.word} distinction matters because bad policy often hides inside agreeable words.` : `That is why ${p.word} matters less as vocabulary than as a test of institutional honesty.`,
+            p.kind === 'verb' ? `By the conclusion, the question is not whether to ${p.word}, but who benefits if no one does.` : p.kind === 'adjective' ? `By the conclusion, the ${p.word} choice is clarity now or a more expensive confusion later.` : `By the conclusion, ${p.word} has become evidence of a larger bargain: clarity now, or a more expensive confusion later.`
+          ];
+          const moves = style === 'argumentative' ? argumentativeMoves : narrativeMoves;
+          return moves[(seed + idx * 7) % moves.length];
+        };
+        const body = profiles.map(sentenceFor).join(' ');
+        const translationLead = style === 'argumentative' ? `问题从${setting}开始，在那里，一个词就能揭示整个系统的代价。` : `在${setting}，清晨似乎先围绕一个词完成了布置，才等人们敢把它说出口。`;
+        const translationBody = profiles.map((p, idx) => ` ${p.word} 在这里按“${p.chinese}”理解，${p.kind === 'verb' ? '推动人物或制度真正发生变化' : p.kind === 'adjective' ? '准确描写一种状态的质感' : '成为场景或论证中的核心压力'}。`).join('');
+        return { source: 'Offline dynamic AI fallback', sourceKey, style, vocabulary: words.slice(0, 5), title, article: { lead, body, vocabulary: words.slice(0, 5) }, translation: `${translationLead}${translationBody}`, questions: questionsFor(title, words, source.tone), analysis: { structure: style === 'argumentative' ? ['Setting', 'Word-by-word argument roles', 'Systemic trade-off', 'Judgment'] : ['Setting', 'Word-by-word scene roles', 'Image chain', 'Aftertaste'], keySentences: [lead, ...profiles.slice(0, 2).map((p, i) => sentenceFor(p, i))], answerKey: ['A','A','A','A','A'] } };
+      }
+      function excerptPackFromCorpus(words, style, sourceKey) {
+        const source = articleSources[sourceKey] || articleSources.economist;
+        const excerpt = matchingExcerpt(words);
+        if (!excerpt) return null;
+        const text = `${excerpt.lead} ${excerpt.body}`;
+        const exactHits = words.filter((w) => new RegExp(`\\b${escapeRegExp(w)}\\b`, 'i').test(text));
+        if (!exactHits.length) return null;
+        const missing = words.filter((w) => !exactHits.some((hit) => hit.toLowerCase() === w.toLowerCase()));
+        const bridge = missing.length ? ` The remaining vocabulary is then folded in through a licensed study expansion: ${missing.map((w, i) => semanticSlot(w, i, 'en')).join('; ')}.` : ' The excerpt is kept close to its original texture because the target vocabulary already appears there.';
+        const bridgeCn = missing.length ? `其余词汇通过学习扩写补入：${missing.map((w, i) => semanticSlot(w, i, 'zh')).join('、')}。` : '目标词已经出现在摘录语境中，因此保留其原有语感。';
+        return { source: excerpt.origin, sourceKey: 'classic-excerpt', style, vocabulary: words.slice(0, 5), title: excerpt.title, article: { lead: excerpt.lead, body: `${excerpt.body}${bridge}`, vocabulary: words.slice(0, 5) }, translation: `${excerpt.translation}${bridgeCn}`, questions: questionsFor(excerpt.title, words, source.tone), analysis: { structure: ['Exact source hit', 'Original texture', 'Study expansion', 'Vocabulary mapping'], keySentences: [excerpt.lead, excerpt.body, bridge], answerKey: ['A','A','A','A','A'] } };
+      }
+      function buildPassagePrompt(words, style, sourceKey, mode, requestId) {
+        const source = articleSources[sourceKey] || articleSources.economist;
+        const profiles = words.map((w, index) => ({ index: index + 1, word: w, ...wordProfile(w) }));
+        const styleTarget = style === 'argumentative' ? 'IELTS Task 2 body-paragraph prose: philosophical but concrete, logically developed, high-band vocabulary without memorised template phrases' : 'English classic or literary narrative, with concrete images, restrained emotion, and a sense of lived particularity';
+        return `You are the AI passage engine for an asset-based English learning platform. Generate ONE original reading pack for this exact request. Output ONE JSON object only, with no Markdown. Request fingerprint: ${requestId}.
+The JSON must match this schema exactly in spirit: ${JSON.stringify(readingSchema)}
+
+PERSONALIZED WRITING CONTRACT
+- This is a fresh request. Do not reuse a previous answer, paragraph skeleton, setting, character, title pattern, opening sentence, or concluding sentence.
+- Ban generic IELTS memorised openings and endings, including 'Nowadays', 'In today's society', 'There is no doubt that', 'It is widely believed that', 'This is why', and 'In conclusion'.
+- Build one specific intellectual or emotional situation around these exact four words. Give the paragraph a private detail, a surprising image, or a non-obvious human observation.
+- Do not explain the vocabulary inside the paragraph. Demonstrate each word through action, consequence, contrast, image, or argument.
+
+NON-NEGOTIABLE GENERATION POLICY
+1. Target words: ${JSON.stringify(profiles)}
+2. Source preference: ${source.label}; tone guide: ${source.tone}; user mode: ${mode}; style target: ${styleTarget}.
+3. First decide whether there is a public-domain English classic excerpt or a licensed foreign-publication excerpt where at least one target word appears EXACTLY. If you are certain such an excerpt is public-domain/licensed and can be quoted, use a short excerpt as the base. If you are not certain, do NOT fabricate a quotation or pretend it is from a real publication.
+4. If no reliable excerpt is available, write original prose. The prose must feel tailored to this exact word set. Do not reuse a generic scene, generic institution, generic station, generic policy paragraph, or obvious fill-in-the-blank structure.
+5. Every target word must appear in lowercase in the English passage exactly as provided, once or more, with word-boundary-safe spelling. Each word must carry its original dictionary meaning. Do not use a word merely as a label. Give every word a different sentence-level function: one may drive conflict, one may describe atmosphere, one may reveal motive, one may sharpen argument, one may alter the ending.
+6. You may imitate the logic of Oxford dictionary example sentences: concise, natural, meaning-revealing usage. You may expand such usage into a richer scene. Do not quote Oxford proprietary examples verbatim unless the example is supplied as licensed text.
+7. Length: write one complete English paragraph of 120-150 words in total, including the lead. Do not use headings, bullet points, or paragraph breaks inside article.body. Chinese translation must be fluent and complete, not mechanical; render target words by their contextual meanings.
+11. IELTS quality check before returning JSON: verify English word count is 120-150; verify all four target words appear in lowercase; verify grammar, spelling, cohesion, a clear opening claim, middle development, and a modest concluding insight.
+8. Questions: exactly 5 reading questions with four options each. Keep answers and analysis in JSON; the UI will hide them until clicked.
+9. Return fields: source, title, article.lead, article.body, article.vocabulary, translation, questions, analysis.structure, analysis.keySentences, analysis.answerKey.
+10. Title must not include 'The Economist:' or any publication prefix unless it is a verified quoted excerpt.
+`;
+      }
+      function extractJsonPayload(text) {
+        const trimmed = String(text || '').trim();
+        if (!trimmed) throw new Error('empty AI response');
+        try { return JSON.parse(trimmed); } catch {}
+        const match = trimmed.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error('AI response did not contain JSON');
+        return JSON.parse(match[0]);
+      }
+      function normalizeGeneratedPack(pack, words, style, sourceKey) {
+        const source = articleSources[sourceKey] || articleSources.economist;
+        const targetWords = words.map((word) => word.toLowerCase());
+        const englishText = `${pack.article?.lead || ''} ${pack.article?.body || ''}`.trim();
+        const bannedPhrases = ['Nowadays', 'In today’s society', "In today's society", 'There is no doubt that', 'It is widely believed that', 'In conclusion'];
+        if (bannedPhrases.some((phrase) => englishText.includes(phrase))) throw new Error('AI output used a memorised template phrase');
+        const wordCount = englishText ? englishText.split(/\s+/).filter(Boolean).length : 0;
+        const missing = targetWords.filter((word) => !new RegExp(`\\b${escapeRegExp(word)}\\b`).test(englishText));
+        if (style === 'argumentative' && (wordCount < 120 || wordCount > 150 || missing.length)) throw new Error(`AI output failed IELTS validation: ${wordCount} words, missing ${missing.join(', ')}`);
+        const questions = Array.isArray(pack.questions) && pack.questions.length ? pack.questions.slice(0, 5) : questionsFor(pack.title || 'Generated Reading', targetWords, source.tone);
+        while (questions.length < 5) questions.push(questionsFor(pack.title || 'Generated Reading', targetWords, source.tone)[questions.length]);
+        return { source: pack.source || 'AI generated reading', sourceKey: pack.sourceKey || sourceKey, style, vocabulary: targetWords.slice(0, 4), title: pack.title || 'Generated Reading', article: { lead: pack.article?.lead || '', body: pack.article?.body || '', vocabulary: targetWords.slice(0, 4) }, translation: pack.translation || '', questions, analysis: pack.analysis || { structure: ['AI generated passage', 'Vocabulary in context'], keySentences: [], answerKey: questions.map((q) => q.answer || 'A') } };
+      }
+      async function callAiForPassage(words, style, sourceKey, mode, requestId) {
+        const config = getAiConfig();
+        if (!config.enabled || !config.endpoint) return null;
+        const headers = { 'Content-Type': 'application/json' };
+        if (config.apiKey) headers.Authorization = `Bearer ${config.apiKey}`;
+        const response = await fetch(config.endpoint, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ model: config.model, temperature: 0.92, presence_penalty: 0.65, frequency_penalty: 0.35, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You produce valid JSON reading packs. Every request must receive genuinely original prose; never reuse a stock template.' }, { role: 'user', content: buildPassagePrompt(words, style, sourceKey, mode, requestId) }] }),
+        });
+        if (!response.ok) throw new Error(`AI request failed: ${response.status}`);
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content || data.output_text || '';
+        return normalizeGeneratedPack(extractJsonPayload(content), words, style, sourceKey);
+      }
+      async function createPack(words, style, sourceKey = 'economist', mode = 'ai') {
+        const requestId = `${Date.now()}-${++passageRequestNo}-${words.join('-')}`;
+        if (mode === 'excerpt') {
+          const excerptPack = excerptPackFromCorpus(words, style, sourceKey);
+          if (excerptPack) return excerptPack;
+        }
+        if (mode === 'offline') return offlineFallbackPack(words, style, sourceKey, mode);
+        try {
+          const aiPack = await callAiForPassage(words, style, sourceKey, mode, requestId);
+          if (aiPack?.article?.body) return aiPack;
+        } catch (err) {
+          console.warn('AI passage generation fell back to offline mode:', err);
+          toast('AI 暂不可用，已使用离线生成');
+        }
+        return offlineFallbackPack(words, style, sourceKey, mode);
+      }
+
+      function highlight(text, words) { const list = [...new Set(words.map((x) => x.trim()).filter(Boolean))].sort((a, b) => b.length - a.length); if (!list.length) return text; const re = new RegExp(`\\b(${list.map(escapeRegExp).join('|')})\\b`, 'gi'); return text.split(re).map((part) => list.some((w) => w.toLowerCase() === part.toLowerCase()) ? `<strong class="highlight">${part}</strong>` : part).join(''); }
+      function highlightTranslation(text, words) {
+        const list = [...new Set(words.map((x) => x.trim()).filter(Boolean))].sort((a, b) => b.length - a.length);
+        if (!list.length) return esc(text);
+        const re = new RegExp(`\\b(${list.map(escapeRegExp).join('|')})\\b`, 'gi');
+        return esc(text).split(re).map((part) => {
+          const word = list.find((w) => w.toLowerCase() === part.toLowerCase());
+          if (!word) return part;
+          const lower = word.toLowerCase();
+          const cn = fallback[lower]?.chinese || quickChinese[lower] || word;
+          return `<strong class="translation-highlight">${esc(cn)}</strong>`;
+        }).join('');
+      }
+      function toast(msg) { $('toast').textContent = msg; $('toast').hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => ($('toast').hidden = true), 1600); }
+
+      function renderSchema(pack) { $('schemaBox').textContent = JSON.stringify(readingSchema, null, 2); }
+      function renderVault() {
+        const counts = assets.reduce((a, x) => { a.total++; a.score += (x.mastery?.score || 0); if (x.mastery?.stage === 'review') a.review++; if (x.mastery?.stage === 'mastered') a.mastered++; return a; }, { total: 0, score: 0, review: 0, mastered: 0 });
+        $('totalMetric').textContent = counts.total; $('reviewMetric').textContent = counts.review; $('masteredMetric').textContent = counts.mastered; $('scoreMetric').textContent = counts.total ? Math.round(counts.score / counts.total) : 0; $('corpusCount').textContent = corpus.length; $('relationLine').textContent = `关系数：${relations.length} · 复习队列：${queue.length}`;
+        const labels = { all: '全部', word: '单词', phrase: '句式', sentence: '句子', passage: '文段', question: '题目', speech: '口语片段' };
+        $('filters').innerHTML = Object.keys(labels).map((k) => `<button class="filter ${filter === k ? 'active' : ''}" data-filter="${k}">${labels[k]}</button>`).join('');
+        $('assetItems').innerHTML = (filter === 'all' ? assets : assets.filter((x) => x.type === filter)).map((x) => `<button class="asset-item ${x.id === selectedAssetId ? 'selected' : ''}" data-asset="${x.id}"><small>${labels[x.type] || x.type} · ${(x.mastery?.stage || 'new')}</small><strong>${esc(x.title)}</strong><p>${esc(x.content)}</p></button>`).join('') || '<div class="empty">暂无资产。生成文段或导入词汇后会显示。</div>';
+        document.querySelectorAll('[data-filter]').forEach((b) => (b.onclick = () => { filter = b.dataset.filter; renderVault(); }));
+        document.querySelectorAll('[data-asset]').forEach((b) => (b.onclick = () => { selectedAssetId = b.dataset.asset; renderVault(); }));
+        const recent = assets.find((x) => x.id === selectedAssetId) || assets[0];
+        if (recent && !selectedAssetId) selectedAssetId = recent.id;
+        $('assetDetail').innerHTML = recent ? `<b>编辑资产</b><div class="muted-line">类型：${labels[recent.type] || recent.type} · 来源：${esc(recent.source?.origin || 'manual')}</div><label for="editTitle">标题</label><input id="editTitle" value="${esc(recent.title)}" /><label for="editContent">内容</label><textarea id="editContent" rows="6">${esc(recent.content)}</textarea><label for="editTags">标签</label><input id="editTags" value="${esc((recent.tags || []).join(', '))}" /><div class="edit-row"><div><label for="editStage">阶段</label><select id="editStage"><option value="new" ${recent.mastery?.stage === 'new' ? 'selected' : ''}>new</option><option value="learning" ${recent.mastery?.stage === 'learning' ? 'selected' : ''}>learning</option><option value="review" ${recent.mastery?.stage === 'review' ? 'selected' : ''}>review</option><option value="mastered" ${recent.mastery?.stage === 'mastered' ? 'selected' : ''}>mastered</option></select></div><div><label for="editScore">分数</label><input id="editScore" type="number" min="0" max="100" value="${recent.mastery?.score || 0}" /></div></div><div class="asset-actions"><button class="btn small primary" id="saveAsset">保存修改</button><button class="btn small" id="reviewAsset">推送复习</button><button class="btn small danger" id="deleteAsset">删除</button></div><div class="muted-line">更新：${new Date(recent.updatedAt || recent.createdAt).toLocaleString()}</div>` : '<b>编辑资产</b><div class="empty">暂无资产。生成文段或导入词汇后会显示。</div>'; 
+        const saveBtn = $('saveAsset'); if (saveBtn && recent) saveBtn.onclick = () => saveAssetEdit(recent.id);
+        const deleteBtn = $('deleteAsset'); if (deleteBtn && recent) deleteBtn.onclick = () => deleteAsset(recent.id);
+        const reviewBtn = $('reviewAsset'); if (reviewBtn && recent) reviewBtn.onclick = () => { addQueue(recent.id); renderVault(); toast('已加入复习队列'); };
+      }
+      function renderCorpus() {
+        $('corpusList').innerHTML = corpus.length ? corpus.map((x) => `<article class="corpus-item"><p>${x.text}</p><div class="item-actions"><button class="btn small" data-copy="${x.id}">⧉ 复制</button><button class="btn small" data-translate="${x.id}">译文</button><button class="btn small" data-delete="${x.id}">× 删除</button></div><div class="corpus-translation" id="corpus-tr-${x.id}" hidden></div><label style="margin-top:13px">收藏备注</label><textarea rows="2" data-note="${x.id}" placeholder="记录为什么收藏这个句型">${x.note || ''}</textarea></article>`).join('') : '<div class="empty">还没有收藏语料。在文段中划选词组或句子后即可加入。</div>';
+        document.querySelectorAll('[data-copy]').forEach((b) => (b.onclick = async () => { const item = corpus.find((x) => x.id === b.dataset.copy); try { await navigator.clipboard.writeText(item.text); } catch { const ta = document.createElement('textarea'); ta.value = item.text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); } toast('已复制'); }));
+        document.querySelectorAll('[data-translate]').forEach((b) => (b.onclick = () => { const item = corpus.find((x) => x.id === b.dataset.translate); const box = $(`corpus-tr-${b.dataset.translate}`); if (!item || !box) return; const open = box.hidden; box.hidden = !open; box.innerHTML = open ? `<div class="corpus-translation-inner">${corpusTranslation(item.text)}</div>` : ''; b.textContent = open ? '收起' : '译文'; }));
+        document.querySelectorAll('[data-delete]').forEach((b) => (b.onclick = () => { corpus = corpus.filter((x) => x.id !== b.dataset.delete); write(CORPUS_KEY, corpus); renderCorpus(); renderVault(); saveLearningState(currentPack, parseWords($('wordInput').value), corpus); }));
+        document.querySelectorAll('[data-note]').forEach((t) => (t.oninput = () => { const item = corpus.find((x) => x.id === t.dataset.note); if (item) { item.note = t.value; write(CORPUS_KEY, corpus); saveLearningState(currentPack, parseWords($('wordInput').value), corpus); } }));
+        const importBtn = $('importCorpusBtn'); if (importBtn) importBtn.onclick = () => { const text = prompt('粘贴语料 JSON 或逐行文本：'); if (text != null) importCorpus(text); };
+        const exportBtn = $('exportCorpusBtn'); if (exportBtn) exportBtn.onclick = exportCorpus;
+        const clearBtn = $('clearCorpusBtn'); if (clearBtn) clearBtn.onclick = clearCorpus;
+      }
+      function renderDictionary(words) {
+        $('wordGrid').innerHTML = words.map((w) => { const e = fallback[w.toLowerCase()]; return `<article class="word-card"><div class="word-row"><div><button class="word" data-word="${w}">${w}</button><div class="phonetic">${(e?.phonetic || '点击查义')}</div></div><button class="btn lookup" data-word="${w}">⌕</button></div><div class="definition" id="def-${w.toLowerCase().replace(/[^a-z]/g, '')}"><div class="empty">点击单词查看离线释义。</div></div></article>`; }).join('');
+        document.querySelectorAll('[data-word]').forEach((b) => (b.onclick = () => lookup(b.dataset.word)));
+      }
+      function lookup(word) {
+        const e = fallback[word.toLowerCase()] || { phonetic: '暂无音标', pos: 'word', chinese: `结合当前语境理解为“${word}”的核心含义`, explanation: 'Offline dictionary explanation is not available yet.', collocations: [`use ${word} in context`, `a natural ${word} phrase`] };
+        const id = `def-${word.toLowerCase().replace(/[^a-z]/g, '')}`;
+        $(id).innerHTML = `<div><dt>中文释义</dt><dd class="meaning">${e.chinese}</dd></div><div><dt>词典解释</dt><dd>${e.explanation}</dd></div><div><dt>词性</dt><dd>${e.pos}</dd></div><div><dt>固定搭配</dt><dd class="collocations">${e.collocations.join('\n')}</dd></div>`;
+        upsert(wordsAsset(word, e), [{ fromId: selectedAssetId || 'reading', toId: word.toLowerCase(), relationType: 'explains' }]); renderVault();
+      }
+      function setPage(page) {
+        const isAssets = page === 'assets';
+        $('assetPage').hidden = !isAssets;
+        $('learnPage').hidden = isAssets;
+        $('goAssets').setAttribute('aria-current', isAssets ? 'page' : 'false');
+        $('goLearn').setAttribute('aria-current', isAssets ? 'false' : 'page');
+        location.hash = isAssets ? 'assets' : 'learn';
+        if (isAssets) renderVault();
+      }
+      function showArticle(pack, words, saveAsset = true) {
+        currentArticle = pack; currentPack = pack;
+        $('articleTitle').textContent = pack.title;
+        $('readingBody').innerHTML = `<p>${highlight(pack.article.lead + ' ' + pack.article.body, words)}</p>`;
+        $('translation').hidden = false;
+        $('translation').innerHTML = `<strong>中文翻译</strong>${highlightTranslation(pack.translation, words)}`;
+        if (saveAsset) upsert(passageAsset(pack, words, $('styleSelect').value), words.map((w) => ({ fromId: pack.title, toId: w.toLowerCase(), relationType: 'contains' })));
+        renderVault();
+        renderSchema(pack);
+        saveLearningState(pack, words);
+      }
+      async function generateArticleScene() {
+        const raw = $('wordInput').value;
+        const all = raw.split(/[\s,，;；]+/).map((x) => x.trim()).filter(Boolean);
+        const words = parseWords(raw); $('wordCount').textContent = `${words.length}/${MAX_WORDS}`;
+        if (words.length !== MAX_WORDS) { $('error').textContent = `请输入恰好 ${MAX_WORDS} 个英文关键词，当前为 ${words.length} 个。`; $('error').hidden = false; return; }
+        $('error').hidden = all.length <= MAX_WORDS; if (all.length > MAX_WORDS) $('error').textContent = `最多支持 ${MAX_WORDS} 个关键词，已按前 ${MAX_WORDS} 个处理。`;
+        $('loading').hidden = false; $('generateBtn').disabled = true; $('readingBody').innerHTML = '<div class="skeleton"><i></i><i></i><i></i><i></i></div>'; 
+        try {
+          const pack = await createPack(words, $('styleSelect').value, $('sourceSelect').value, $('modeSelect').value);
+          showArticle(pack, words);
+          renderDictionary(words);
+          saveLearningState(pack, words);
+        } finally {
+          $('loading').hidden = true;
+          $('generateBtn').disabled = false;
+        }
+      }
+
+      function renderQuestions() {}
+      function fillSchemaAndQuestions(pack){ renderSchema(pack); }
+      $('wordInput').oninput = () => { const words = parseWords($('wordInput').value); $('wordCount').textContent = `${words.length}/${MAX_WORDS}`; if (!words.length) { clearLearningOutput(); saveLearningState(null, []); } else saveLearningState(currentPack, words); };
+      $('styleSelect').onchange = async () => { $('styleHint').textContent = $('styleSelect').value === 'narrative' ? '英文经典叙事：具体意象、克制情绪与层次化细节' : '120–150 词雅思主体段：观点引入、关键词展开、生活化哲理与适度升华'; if (currentPack) await generateArticleScene(); else saveLearningState(); };
+      $('sourceSelect').onchange = () => { if (parseWords($('wordInput').value).length) generateArticleScene(); else saveLearningState(); };
+      $('modeSelect').onchange = () => { if (parseWords($('wordInput').value).length) generateArticleScene(); else saveLearningState(); };
+      $('goLearn').onclick = () => setPage('learn');
+      $('goAssets').onclick = () => setPage('assets');
+      $('importAssets').onclick = () => { const lines = $('importText').value.split(/\n+/).map((x) => x.trim()).filter(Boolean); lines.forEach((x) => upsert({ type: 'word', title: x, content: x, source: { origin: $('sourceKind').value, title: 'Imported list' }, tags: ['imported'], mastery: { score: 18, stage: 'new' } })); $('importText').value = ''; renderVault(); toast(`已导入 ${lines.length} 条资产`); };
+      $('openCorpus').onclick = () => { $('drawerWrap').classList.add('open'); renderCorpus(); };
+      $('closeCorpus').onclick = $('scrim').onclick = () => $('drawerWrap').classList.remove('open');
+      $('readingBody').onmouseup = () => { clearTimeout(selectionTimer); selectionTimer = setTimeout(() => { const s = getSelection(); const text = s?.toString().trim(); if (!text || text.length < 2 || s.isCollapsed) { $('selectionTip').hidden = true; return; } const rect = s.getRangeAt(0).getBoundingClientRect(); selectedText = text; $('selectionTip').style.left = `${rect.left + rect.width / 2}px`; $('selectionTip').style.top = `${Math.max(48, rect.top - 8)}px`; $('selectionTip').hidden = false; }, 70); };
+      $('selectionTip').onmousedown = (e) => e.preventDefault();
+      $('selectionTip').onclick = () => { if (!selectedText) return; const item = { id: uid(), text: selectedText, note: '', createdAt: iso() }; corpus.unshift(item); write(CORPUS_KEY, corpus); upsert(sentenceAsset(selectedText), [{ fromId: selectedAssetId || 'reading', toId: selectedText.slice(0, 25), relationType: 'derivedFrom' }]); addQueue(item.id); $('selectionTip').hidden = true; getSelection()?.removeAllRanges(); renderCorpus(); renderVault(); toast('已添加到语料库'); };
+
+      renderVault(); renderCorpus(); const savedState = read(LEARNING_STATE_KEY, null); if (savedState) { $('wordInput').value = savedState.wordsText || ''; $('styleSelect').value = savedState.style || $('styleSelect').value; $('sourceSelect').value = savedState.source || $('sourceSelect').value; const savedMode = savedState.mode === 'corpus' ? 'excerpt' : (savedState.mode === 'imitate' ? 'ai' : savedState.mode); $('modeSelect').value = savedMode || 'ai'; $('styleHint').textContent = $('styleSelect').value === 'narrative' ? '英文经典叙事：具体意象、克制情绪与层次化细节' : '120–150 词雅思主体段：观点引入、关键词展开、生活化哲理与适度升华'; } const initialWords = parseWords($('wordInput').value); $('wordCount').textContent = `${initialWords.length}/${MAX_WORDS}`; if (savedState?.pack && initialWords.length) { currentPack = savedState.pack; showArticle(savedState.pack, savedState.words || initialWords, false); renderDictionary(savedState.words || initialWords); } else if (initialWords.length) { renderDictionary(initialWords); } else clearLearningOutput();
+      $('generateBtn').onclick = () => { if (!readAuthSession()) return openAuthModal(); generateArticleScene(); };
+      $('openAuth').onclick = openAuthModal;
+      $('closeAuth').onclick = $('authScrim').onclick = closeAuthModal;
+      $('loginTab').onclick = () => setAuthMode('login');
+      $('registerTab').onclick = () => setAuthMode('register');
+      $('saveApiConfig').onclick = saveApiSettings;
+      $('logoutBtn').onclick = () => { localStorage.removeItem(AUTH_SESSION_KEY); syncAuthUi(); toast('已退出登录'); };
+      $('authForm').onsubmit = (event) => { event.preventDefault(); const email = $('authEmail').value.trim().toLowerCase(); const password = $('authPassword').value; const users = readAuthUsers(); const existing = users.find((user) => user.email === email); if (authMode === 'register') { if (password.length < 6) return setAuthError('密码至少需要 6 位。'); if (password !== $('confirmPassword').value) return setAuthError('两次输入的密码不一致。'); if (existing) return setAuthError('该邮箱已经注册，请直接登录。'); users.push({ email, password, createdAt: iso() }); write(AUTH_USERS_KEY, users); } else if (!existing || existing.password !== password) return setAuthError('邮箱或密码不正确。'); write(AUTH_SESSION_KEY, { email, signedInAt: iso() }); closeAuthModal(); syncAuthUi(); toast(authMode === 'register' ? '注册成功，已登录' : '登录成功'); };
+      syncAuthUi();
+      setPage(location.hash.replace('#', '') === 'assets' ? 'assets' : 'learn');
+    })();
+  </script>
+</body>
+</html>
+<style>.auth-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px}.auth-modal[hidden]{display:none}.auth-scrim{position:absolute;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(5px)}.auth-card{position:relative;width:min(460px,100%);max-height:min(760px,calc(100vh - 32px));overflow:auto;padding:26px;background:#fff;border:1px solid rgba(217,226,236,.92);border-radius:16px;box-shadow:0 28px 70px rgba(15,23,42,.24)}.auth-brand{color:var(--teal-dark);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.auth-card h2{margin-top:8px;font-size:24px}.auth-sub{margin:8px 0 18px;color:var(--muted);font-size:13px;line-height:1.7}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;margin-bottom:18px;background:#f1f5f9;border-radius:10px}.auth-tab{border:0;background:transparent;color:#64748b;border-radius:8px;padding:9px;font-weight:800}.auth-tab.active{background:#fff;color:#0f766e;box-shadow:0 2px 8px rgba(15,23,42,.08)}.auth-submit{width:100%;margin-top:16px}.auth-error{margin-top:12px;padding:9px 11px;border-radius:8px;background:#fff1f2;color:#be123c;font-size:13px}.auth-divider{display:flex;align-items:center;gap:10px;margin:22px 0 14px;color:#64748b;font-size:12px}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:#e2e8f0;flex:1}.auth-note{margin:10px 0 0;color:#64748b;font-size:11px;line-height:1.6}.auth-actions{display:flex;gap:8px;margin-top:14px}.auth-actions .btn{flex:1}.auth-close{position:absolute;right:16px;top:14px;border:0;background:transparent;color:#64748b;font-size:24px;line-height:1}.auth-close:hover{color:#0f172a}@media(max-width:560px){.auth-card{padding:20px}.auth-modal{padding:12px}}</style>
+</html>
