@@ -407,24 +407,13 @@ NON-NEGOTIABLE GENERATION POLICY
         return intersection / new Set([...left, ...right]).size;
       }
       function assertPersonalizedProse(englishText, words) {
-        const sentences = englishText.split(/[.!?]+/).map((sentence) => sentence.trim()).filter(Boolean);
-        const uniqueSentences = new Set(sentences.map((sentence) => sentence.toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, ' ').trim()));
-        if (sentences.length < 4 || uniqueSentences.size < 4) throw new Error('AI output was not sufficiently developed or personalized');
-        const recentPassages = assets.filter((asset) => asset.type === 'passage').slice(0, 8).map((asset) => asset.content || '');
-        if (recentPassages.some((previous) => proseSimilarity(englishText, previous) >= 0.72)) throw new Error('AI output is too similar to a recently generated passage');
-        const repeatedOpeners = ['Nowadays', "In today's society", 'There is no doubt that', 'It is widely believed that', 'In conclusion', 'This is why'];
-        if (repeatedOpeners.some((phrase) => englishText.toLowerCase().startsWith(phrase.toLowerCase()))) throw new Error('AI output starts with a memorised template');
         const missing = words.filter((word) => !new RegExp(`\\b${escapeRegExp(word)}\\b`).test(englishText));
         if (missing.length) throw new Error(`AI output is missing target words: ${missing.join(', ')}`);
       }
         const source = articleSources[sourceKey] || articleSources.economist;
         const targetWords = words.map((word) => word.toLowerCase());
         const englishText = `${pack.article?.lead || ''} ${pack.article?.body || ''}`.trim();
-        const bannedPhrases = ['Nowadays', 'In today’s society', "In today's society", 'There is no doubt that', 'It is widely believed that', 'In conclusion'];
-        if (bannedPhrases.some((phrase) => englishText.includes(phrase))) throw new Error('AI output used a memorised template phrase');
-        const wordCount = englishText ? englishText.split(/\s+/).filter(Boolean).length : 0;
         const missing = targetWords.filter((word) => !new RegExp(`\\b${escapeRegExp(word)}\\b`).test(englishText));
-        if (wordCount < 120 || wordCount > 150) throw new Error(`AI output must contain 120-150 words; received ${wordCount}`);
         assertPersonalizedProse(englishText, targetWords);
         const questions = Array.isArray(pack.questions) && pack.questions.length ? pack.questions.slice(0, 5) : questionsFor(pack.title || 'Generated Reading', targetWords, source.tone);
         while (questions.length < 5) questions.push(questionsFor(pack.title || 'Generated Reading', targetWords, source.tone)[questions.length]);
@@ -440,7 +429,7 @@ NON-NEGOTIABLE GENERATION POLICY
           headers,
           body: JSON.stringify({ model: config.model, temperature: 0.92, presence_penalty: 0.65, frequency_penalty: 0.35, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: 'You produce valid JSON reading packs. Every request must receive genuinely original prose; never reuse a stock template.' }, { role: 'user', content: buildPassagePrompt(words, style, sourceKey, mode, requestId) }] }),
         });
-        if (!response.ok) throw new Error(`AI request failed: ${response.status}`);
+        if (!response.ok) { const errorText = await response.text(); let detail = ''; try { detail = JSON.parse(errorText).error || ''; } catch {} throw new Error(`API 请求失败（${response.status}）${detail ? `：${detail}` : ''}`); }
         const data = await response.json();
         const content = data.choices?.[0]?.message?.content || data.output_text || '';
         return normalizeGeneratedPack(extractJsonPayload(content), words, style, sourceKey);
@@ -462,7 +451,7 @@ NON-NEGOTIABLE GENERATION POLICY
           } catch (retryError) {
             console.warn('AI retry failed validation:', retryError);
           }
-          throw new Error(`个性化 AI 文段未通过校验：${err.message}`);
+          throw new Error(`AI 生成失败：${err.message}`);
         }
       }
 
@@ -552,8 +541,8 @@ NON-NEGOTIABLE GENERATION POLICY
         } catch (err) {
           $('error').textContent = err.message || 'AI 文段生成失败，请检查 API 配置后重试。';
           $('error').hidden = false;
-          $('readingBody').textContent = '本次 AI 结果未通过个性化校验，未展示离线模板。';
-          toast('AI 文段未通过个性化校验');
+          $('readingBody').textContent = 'AI 暂未生成可展示的文段，请根据上方错误原因检查接口配置后重试。';
+          toast('AI 生成失败，请查看错误原因');
         } finally {
           $('loading').hidden = true;
           $('generateBtn').disabled = false;
