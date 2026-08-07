@@ -410,8 +410,6 @@ NON-NEGOTIABLE GENERATION POLICY
         const sentences = englishText.split(/[.!?]+/).map((sentence) => sentence.trim()).filter(Boolean);
         const uniqueSentences = new Set(sentences.map((sentence) => sentence.toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, ' ').trim()));
         if (sentences.length < 4 || uniqueSentences.size < 4) throw new Error('AI output was not sufficiently developed or personalized');
-        const detailSignals = (englishText.match(/\b(?:at|near|beside|under|through|inside|before|after|while|because|although|yet|but|whose|where|when)\b/gi) || []).length;
-        if (detailSignals < 4) throw new Error('AI output lacks a specific lived detail or a developed line of thought');
         const recentPassages = assets.filter((asset) => asset.type === 'passage').slice(0, 8).map((asset) => asset.content || '');
         if (recentPassages.some((previous) => proseSimilarity(englishText, previous) >= 0.72)) throw new Error('AI output is too similar to a recently generated passage');
         const repeatedOpeners = ['Nowadays', "In today's society", 'There is no doubt that', 'It is widely believed that', 'In conclusion', 'This is why'];
@@ -457,7 +455,13 @@ NON-NEGOTIABLE GENERATION POLICY
           if (aiPack?.article?.body) return aiPack;
           throw new Error('AI returned an empty personalized passage');
         } catch (err) {
-          console.warn('Personalized AI passage was rejected:', err);
+          console.warn('First AI passage failed validation; retrying once:', err);
+          try {
+            const retryPack = await callAiForPassage(words, style, sourceKey, mode, `${requestId}-retry`);
+            if (retryPack?.article?.body) return retryPack;
+          } catch (retryError) {
+            console.warn('AI retry failed validation:', retryError);
+          }
           throw new Error(`个性化 AI 文段未通过校验：${err.message}`);
         }
       }
