@@ -23,4 +23,16 @@ https://YOUR_USERNAME.github.io/YOUR_REPOSITORY_NAME/
 
 ## Notes
 
-Do not place private API keys directly in `index.html`. If AI or dictionary APIs require secrets later, put them behind a small backend proxy such as Vercel Functions, Netlify Functions, or Cloudflare Workers.
+Do not place private API keys directly in `index.html` or `localStorage` for production.
+
+## Cloudflare Pages + Worker API
+This project includes a Cloudflare Pages Function at `functions/api/generate-passage.js`. Pages Functions run on Cloudflare's Worker runtime and are reached by the same-origin URL `/api/generate-passage`.
+
+1. Push the project, including the `functions/` directory, to GitHub.
+2. In Cloudflare Dashboard, open **Workers & Pages**, select the Pages project, then **Settings -> Variables and Secrets**.
+3. Add an encrypted secret named `OPENAI_API_KEY`. Add `OPENAI_MODEL` as a normal variable or keep the default `gpt-4o-mini`.
+4. Redeploy the Pages project.
+5. The frontend already calls `/api/generate-passage` by default.
+
+For local Pages Functions testing, copy `.dev.vars.example` to an untracked `.dev.vars` and add the secret. Never commit `.dev.vars`.
+The current login and asset data are still browser-local `localStorage` data. A production account system needs a database and real authentication later.

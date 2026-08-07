@@ -1,0 +1,9 @@
+name = "vocabulary-corpus-api"
+compatibility_date = "2026-08-07"
+
+[vars]
+OPENAI_MODEL = "gpt-4o-mini"
+
+# For local Pages Functions development, copy .dev.vars.example to .dev.vars
+# and put the secret value in .dev.vars. For production, create the secret in
+# Cloudflare Dashboard or with `wrangler pages secret put OPENAI_API_KEY`.

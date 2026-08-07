@@ -65,7 +65,7 @@ body{background:linear-gradient(180deg,rgba(248,250,252,.94),rgba(238,243,246,.9
         <textarea id="wordInput" rows="7" placeholder="例如：beyond, gentle, friendly, proceed"></textarea>
         <div class="field"><label for="styleSelect">文体目标</label><select id="styleSelect"><option value="argumentative">雅思大作文主体段 (Argumentative)</option><option value="narrative">英文经典叙事 (Narrative)</option></select><div class="hint" id="styleHint">120–150 词，围绕成长、生活、人际、社会或学习展开，强调观点、例证与自然衔接</div></div>
         <div class="field"><label for="sourceSelect">外刊来源</label><select id="sourceSelect"><option value="economist">The Economist</option><option value="ft">Financial Times</option><option value="nature">Nature</option></select><div class="hint">用 JSON Schema 固定输出文章、翻译、5 题与解析，避免结构漂移。</div></div>
-        <div class="field"><label for="modeSelect">文段方式</label><select id="modeSelect"><option value="ai">AI 自动生成</option><option value="excerpt">原文摘录优先</option><option value="offline">离线兜底生成</option></select><div class="hint">默认由 AI 判断：有公版经典/授权外刊原词则优先摘录，否则按词义生成外刊或经典风格文段。</div></div>
+        <div class="field"><label for="modeSelect">文段方式</label><select id="modeSelect"><option value="ai">AI 个性化生成</option></select><div class="hint">每次必须调用已配置的 AI，按本次四词原义独立创作；未通过个性化校验时不会展示离线模板。</div></div>
         <div class="error" id="error" hidden></div>
         <button class="btn primary generate" id="generateBtn">✦ 生成外刊阅读文段</button>
       </aside>
@@ -94,20 +94,22 @@ body{background:linear-gradient(180deg,rgba(248,250,252,.94),rgba(238,243,246,.9
   <script>
     (() => {
       const MAX_WORDS = 4;
+      const previousWorkspaceState = (() => { try { return JSON.parse(localStorage.getItem('learningWorkspaceState') || 'null'); } catch { return null; } })();
+      if (previousWorkspaceState && previousWorkspaceState.version !== 3) localStorage.removeItem('learningWorkspaceState');
       const ASSET_KEY = 'learningAssets';
       const RELATION_KEY = 'assetRelations';
       const QUEUE_KEY = 'reviewQueue';
       const CORPUS_KEY = 'myCorpus';
       const LEARNING_STATE_KEY = 'learningWorkspaceState';
       const AI_PASSAGE_CONFIG = {
-        enabled: false,
-        endpoint: 'https://api.openai.com/v1/chat/completions',
+        enabled: true,
+        endpoint: '/api/generate-passage',
         model: 'gpt-4o-mini',
         apiKey: '',
       };
       const getAiConfig = () => ({
         ...AI_PASSAGE_CONFIG,
-        enabled: localStorage.getItem('aiPassageEnabled') === 'true' || AI_PASSAGE_CONFIG.enabled,
+        enabled: localStorage.getItem('aiPassageEnabled') !== 'false' && AI_PASSAGE_CONFIG.enabled,
         endpoint: localStorage.getItem('aiPassageEndpoint') || AI_PASSAGE_CONFIG.endpoint,
         model: localStorage.getItem('aiPassageModel') || AI_PASSAGE_CONFIG.model,
         apiKey: localStorage.getItem('aiPassageApiKey') || AI_PASSAGE_CONFIG.apiKey,
@@ -265,7 +267,7 @@ body{background:linear-gradient(180deg,rgba(248,250,252,.94),rgba(238,243,246,.9
         renderCorpus(); renderVault(); saveLearningState(currentPack, parseWords($('wordInput').value), corpus); toast('语料库已清空');
       }
       function saveLearningState(pack = currentPack, words = parseWords($('wordInput').value), corpusState = corpus) {
-        write(LEARNING_STATE_KEY, { wordsText: $('wordInput').value, style: $('styleSelect').value, source: $('sourceSelect').value, mode: $('modeSelect').value, pack, words, corpusState, savedAt: iso() });
+        write(LEARNING_STATE_KEY, { version: 3, wordsText: $('wordInput').value, style: $('styleSelect').value, source: $('sourceSelect').value, mode: 'ai', pack, words, corpusState, savedAt: iso() });
       }
       function clearLearningOutput() {
         currentPack = null; currentArticle = null;
@@ -397,6 +399,26 @@ NON-NEGOTIABLE GENERATION POLICY
         return JSON.parse(match[0]);
       }
       function normalizeGeneratedPack(pack, words, style, sourceKey) {
+      function normalizedTokens(text) { return String(text || '').toLowerCase().match(/[a-z]+(?:'[a-z]+)?/g) || []; }
+      function proseSimilarity(a, b) {
+        const left = new Set(normalizedTokens(a)); const right = new Set(normalizedTokens(b));
+        if (!left.size || !right.size) return 0;
+        const intersection = [...left].filter((token) => right.has(token)).length;
+        return intersection / new Set([...left, ...right]).size;
+      }
+      function assertPersonalizedProse(englishText, words) {
+        const sentences = englishText.split(/[.!?]+/).map((sentence) => sentence.trim()).filter(Boolean);
+        const uniqueSentences = new Set(sentences.map((sentence) => sentence.toLowerCase().replace(/[^a-z ]/g, '').replace(/\s+/g, ' ').trim()));
+        if (sentences.length < 4 || uniqueSentences.size < 4) throw new Error('AI output was not sufficiently developed or personalized');
+        const detailSignals = (englishText.match(/\b(?:at|near|beside|under|through|inside|before|after|while|because|although|yet|but|whose|where|when)\b/gi) || []).length;
+        if (detailSignals < 4) throw new Error('AI output lacks a specific lived detail or a developed line of thought');
+        const recentPassages = assets.filter((asset) => asset.type === 'passage').slice(0, 8).map((asset) => asset.content || '');
+        if (recentPassages.some((previous) => proseSimilarity(englishText, previous) >= 0.72)) throw new Error('AI output is too similar to a recently generated passage');
+        const repeatedOpeners = ['Nowadays', "In today's society", 'There is no doubt that', 'It is widely believed that', 'In conclusion', 'This is why'];
+        if (repeatedOpeners.some((phrase) => englishText.toLowerCase().startsWith(phrase.toLowerCase()))) throw new Error('AI output starts with a memorised template');
+        const missing = words.filter((word) => !new RegExp(`\\b${escapeRegExp(word)}\\b`).test(englishText));
+        if (missing.length) throw new Error(`AI output is missing target words: ${missing.join(', ')}`);
+      }
         const source = articleSources[sourceKey] || articleSources.economist;
         const targetWords = words.map((word) => word.toLowerCase());
         const englishText = `${pack.article?.lead || ''} ${pack.article?.body || ''}`.trim();
@@ -404,7 +426,8 @@ NON-NEGOTIABLE GENERATION POLICY
         if (bannedPhrases.some((phrase) => englishText.includes(phrase))) throw new Error('AI output used a memorised template phrase');
         const wordCount = englishText ? englishText.split(/\s+/).filter(Boolean).length : 0;
         const missing = targetWords.filter((word) => !new RegExp(`\\b${escapeRegExp(word)}\\b`).test(englishText));
-        if (style === 'argumentative' && (wordCount < 120 || wordCount > 150 || missing.length)) throw new Error(`AI output failed IELTS validation: ${wordCount} words, missing ${missing.join(', ')}`);
+        if (wordCount < 120 || wordCount > 150) throw new Error(`AI output must contain 120-150 words; received ${wordCount}`);
+        assertPersonalizedProse(englishText, targetWords);
         const questions = Array.isArray(pack.questions) && pack.questions.length ? pack.questions.slice(0, 5) : questionsFor(pack.title || 'Generated Reading', targetWords, source.tone);
         while (questions.length < 5) questions.push(questionsFor(pack.title || 'Generated Reading', targetWords, source.tone)[questions.length]);
         return { source: pack.source || 'AI generated reading', sourceKey: pack.sourceKey || sourceKey, style, vocabulary: targetWords.slice(0, 4), title: pack.title || 'Generated Reading', article: { lead: pack.article?.lead || '', body: pack.article?.body || '', vocabulary: targetWords.slice(0, 4) }, translation: pack.translation || '', questions, analysis: pack.analysis || { structure: ['AI generated passage', 'Vocabulary in context'], keySentences: [], answerKey: questions.map((q) => q.answer || 'A') } };
@@ -426,19 +449,17 @@ NON-NEGOTIABLE GENERATION POLICY
       }
       async function createPack(words, style, sourceKey = 'economist', mode = 'ai') {
         const requestId = `${Date.now()}-${++passageRequestNo}-${words.join('-')}`;
-        if (mode === 'excerpt') {
-          const excerptPack = excerptPackFromCorpus(words, style, sourceKey);
-          if (excerptPack) return excerptPack;
-        }
-        if (mode === 'offline') return offlineFallbackPack(words, style, sourceKey, mode);
+        mode = 'ai';
+        const config = getAiConfig();
+        if (!config.enabled || !config.endpoint) throw new Error('请先在“登录 / API”中配置可用的 AI 接口；AI 模式不会使用离线模板。');
         try {
           const aiPack = await callAiForPassage(words, style, sourceKey, mode, requestId);
           if (aiPack?.article?.body) return aiPack;
+          throw new Error('AI returned an empty personalized passage');
         } catch (err) {
-          console.warn('AI passage generation fell back to offline mode:', err);
-          toast('AI 暂不可用，已使用离线生成');
+          console.warn('Personalized AI passage was rejected:', err);
+          throw new Error(`个性化 AI 文段未通过校验：${err.message}`);
         }
-        return offlineFallbackPack(words, style, sourceKey, mode);
       }
 
       function highlight(text, words) { const list = [...new Set(words.map((x) => x.trim()).filter(Boolean))].sort((a, b) => b.length - a.length); if (!list.length) return text; const re = new RegExp(`\\b(${list.map(escapeRegExp).join('|')})\\b`, 'gi'); return text.split(re).map((part) => list.some((w) => w.toLowerCase() === part.toLowerCase()) ? `<strong class="highlight">${part}</strong>` : part).join(''); }
@@ -524,6 +545,11 @@ NON-NEGOTIABLE GENERATION POLICY
           showArticle(pack, words);
           renderDictionary(words);
           saveLearningState(pack, words);
+        } catch (err) {
+          $('error').textContent = err.message || 'AI 文段生成失败，请检查 API 配置后重试。';
+          $('error').hidden = false;
+          $('readingBody').textContent = '本次 AI 结果未通过个性化校验，未展示离线模板。';
+          toast('AI 文段未通过个性化校验');
         } finally {
           $('loading').hidden = true;
           $('generateBtn').disabled = false;
@@ -559,6 +585,4 @@ NON-NEGOTIABLE GENERATION POLICY
     })();
   </script>
 </body>
-</html>
-<style>.auth-modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:20px}.auth-modal[hidden]{display:none}.auth-scrim{position:absolute;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(5px)}.auth-card{position:relative;width:min(460px,100%);max-height:min(760px,calc(100vh - 32px));overflow:auto;padding:26px;background:#fff;border:1px solid rgba(217,226,236,.92);border-radius:16px;box-shadow:0 28px 70px rgba(15,23,42,.24)}.auth-brand{color:var(--teal-dark);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.auth-card h2{margin-top:8px;font-size:24px}.auth-sub{margin:8px 0 18px;color:var(--muted);font-size:13px;line-height:1.7}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;margin-bottom:18px;background:#f1f5f9;border-radius:10px}.auth-tab{border:0;background:transparent;color:#64748b;border-radius:8px;padding:9px;font-weight:800}.auth-tab.active{background:#fff;color:#0f766e;box-shadow:0 2px 8px rgba(15,23,42,.08)}.auth-submit{width:100%;margin-top:16px}.auth-error{margin-top:12px;padding:9px 11px;border-radius:8px;background:#fff1f2;color:#be123c;font-size:13px}.auth-divider{display:flex;align-items:center;gap:10px;margin:22px 0 14px;color:#64748b;font-size:12px}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:#e2e8f0;flex:1}.auth-note{margin:10px 0 0;color:#64748b;font-size:11px;line-height:1.6}.auth-actions{display:flex;gap:8px;margin-top:14px}.auth-actions .btn{flex:1}.auth-close{position:absolute;right:16px;top:14px;border:0;background:transparent;color:#64748b;font-size:24px;line-height:1}.auth-close:hover{color:#0f172a}@media(max-width:560px){.auth-card{padding:20px}.auth-modal{padding:12px}}</style>
 </html>
