@@ -2,8 +2,10 @@ name = "vocabulary-corpus-api"
 compatibility_date = "2026-08-07"
 
 [vars]
+# 如果使用悟空 API，请在 Cloudflare Dashboard 里把 OPENAI_BASE_URL 改成悟空提供的 OpenAI-compatible base URL。
+# 示例格式通常是：https://你的悟空接口域名/v1
+OPENAI_BASE_URL = "https://api.openai.com/v1"
 OPENAI_MODEL = "gpt-4o-mini"
 
-# For local Pages Functions development, copy .dev.vars.example to .dev.vars
-# and put the secret value in .dev.vars. For production, create the secret in
-# Cloudflare Dashboard or with `wrangler pages secret put OPENAI_API_KEY`.
+# OPENAI_API_KEY 必须作为 Cloudflare Encrypted Secret 配置，不要写在这里。
+# Cloudflare Dashboard: Workers & Pages -> vocabulary-5lr -> Settings -> Variables and Secrets
